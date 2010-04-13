@@ -71,6 +71,7 @@ handles.SegmentedCenterliney_data = [];
 handles.FloodLightIsOn_data = [];
 handles.IllumRectOrigin_data = [];
 handles.IllumRectRadius_data = [];
+handles.mmVidObj=[];
 
 % Update handles structure
 guidata(hObject, handles);
@@ -91,6 +92,7 @@ varargout{1} = handles.output;
 
 % SELECT FILE BUTTON
 % --- Executes on button press in pushbutton1.
+% This is the "load image button"
 function pushbutton1_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
@@ -119,7 +121,16 @@ function pushbutton1_Callback(hObject, eventdata, handles)
     set(handles.edit_prefix, 'String', prefix);
     current_frame = str2num(get(handles.edit_currentframe, 'String'));
     numspec = ['%0' num2str(numdigits) 'd'];
-    set(handles.edit15, 'String', numspec);
+    set(handles.edit15, 'String', numspec); 
+        
+        %Load in Videa with mmreader
+       
+    prefix = get(handles.edit_prefix, 'String');
+    if strcmp(filetype, '.avi')
+        filetype = contents{get(handles.popupmenu1,'Value')};
+        handles.mmVidObj=mmreader([prefix filetype]);
+        guidata(hObject, handles);
+    end
     img = load_img(handles,current_frame);   %1
     display_img(handles,img);
 
@@ -134,9 +145,9 @@ function out=load_img(handles,current_frame)
 
     try
         if strcmp(filetype, '.avi')
-            out = aviread([prefix filetype], current_frame);
-            out = out.cdata;
-            out = out(:,:,1);
+            %read in the frame using multimedia reader object
+            tempframe = read(handles.mmVidObj,current_frame);
+            out = tempframe(:,:,1);
         else
             out = imread([prefix num2str(current_frame, numspec) filetype]);
         end
