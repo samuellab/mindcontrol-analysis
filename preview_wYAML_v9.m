@@ -76,6 +76,13 @@ handles.mmVidObj=[];
 % Update handles structure
 guidata(hObject, handles);
 
+%Make sure dependencies are installed...
+if isempty(which('newid','-all'))
+    errordlg('You are missing a dependency. Please download newid from mathworks and follow the directions at http://www.mathworks.com/support/solutions/en/data/1-39UWQT/index.html?product=ML&solution=1-39UWQT');
+    disp('http://www.mathworks.com/support/solutions/en/data/1-39UWQT/index.html?product=ML&solution=1-39UWQT');
+end
+
+
 % UIWAIT makes preview_wYAML_v9 wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
@@ -119,7 +126,8 @@ function pushbutton1_Callback(hObject, eventdata, handles)
         set(handles.edit_numframes, 'String', num2str(numframes));
     end
     set(handles.edit_prefix, 'String', prefix);
-    current_frame = str2num(get(handles.edit_currentframe, 'String'));
+    %Update the frame number from the box in the current frame
+    current_HUDS_frame = str2num(get(handles.edit_currentframe, 'String'));
     numspec = ['%0' num2str(numdigits) 'd'];
     set(handles.edit15, 'String', numspec); 
         
@@ -131,7 +139,7 @@ function pushbutton1_Callback(hObject, eventdata, handles)
         handles.mmVidObj=mmreader([prefix filetype]);
         guidata(hObject, handles);
     end
-    img = load_img(handles,current_frame);   %1
+    img = load_img(handles,current_HUDS_frame);   %1
     display_img(handles,img);
 
 function out=load_img(handles,current_frame)
@@ -205,21 +213,11 @@ function display_img(handles,img)
 
 % --- Executes on button press in pushbutton2.   % ANALYZE
 function pushbutton2_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% istart = str2num(get(handles.edit_T1, 'String'))
-% iend = str2num(get(handles.edit_T4, 'String'))
-% start_illum = str2num(get(handles.edit_T2, 'String'))
-% end_illum = str2num(get(handles.edit_T3, 'String'))
-% analyze_viscosity_v28;
+
 
 % --- If Enable == 'on', executes on mouse press in 5 pixel border.
 % --- Otherwise, executes on mouse press in 5 pixel border or over pushbutton2.
 function pushbutton2_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
 
 
@@ -252,6 +250,9 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
+
+
+
 %
 % ACCEPT KEYPRESS AND UPDATE IMAGE
 %
@@ -262,7 +263,13 @@ function slider2_KeyPressFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 contents = get(handles.popupmenu1,'String') ;
 filetype = contents{get(handles.popupmenu1,'Value')};
+
+%the box tells us the current HUDS frame
 current_frame = str2num(get(handles.edit_currentframe, 'String'));
+
+
+% handles.frameindex(str2num(get(handles.edit_currentframe, 'String')),1) 
+% ANDY!! -> change this to be the HUDS frame, not the current frame
 prefix = get(handles.edit_prefix, 'String');
 numspec = get(handles.edit15, 'String');
 
@@ -292,6 +299,15 @@ val=double(get(f,'CurrentCharacter'));
             set(handles.edit_T1, 'String', num2str(current_frame));
         case 50  % 2
             set(handles.edit_T4, 'String', num2str(current_frame));
+        case 103 %g
+            hframe=str2num(char(newid('Go to HUDS frame number:','Jump to HUDS frame number')));
+            mframe=find(handles.frameindex(:,1)==hframe)
+            if ~isempty(mframe)
+                current_frame=mframe;
+            else
+                msgbox('That number is not valid')
+            end
+            
         otherwise
     end
     if current_frame < 1 
@@ -1073,6 +1089,7 @@ while ~flag
         if strcmp(line1_scan{1}, 'FrameNumber:')
             framenumber = str2num(line1_scan{2});
             handles.frameindex(idx,:) = [framenumber linenumber bytepos] ;
+            %Everyso-often display the frame number we are workign onintermittantly
             if mod(idx, 100)==0 
                 fprintf([num2str(idx) ' ']); 
             end
