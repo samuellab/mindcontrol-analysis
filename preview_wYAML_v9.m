@@ -1078,7 +1078,9 @@ flag = 0;
 idx = 1;
 linenumber = 0;
 handles.frameindex = [];  
+handles.dlpindex = [];
 numframes = str2num(get(handles.edit_numframes, 'String'));
+disp(['With ' num2str(numframes) '  frames']);
 % Each row of frameindex contains this info:
 % [ internal_frame_number, YAML_line_number, byte_position ]
 while ~flag
@@ -1091,7 +1093,7 @@ while ~flag
         if strcmp(line1_scan{1}, 'FrameNumber:')
             framenumber = str2num(line1_scan{2});
             handles.frameindex(idx,:) = [framenumber linenumber bytepos] ;
-            %Everyso-often display the frame number we are workign onintermittantly
+                        %Everyso-often display the frame number we are workign onintermittantly
             if mod(idx, 100)==0 
                 fprintf([num2str(idx) ' ']); 
             end
@@ -1101,6 +1103,11 @@ while ~flag
             idx = idx+1;
             waitbar(idx/numframes)
         end
+       %Now let's also check the status of the DLP... is it on or off?
+       if strcmp(line1_scan{1},'DLPIsOn:')
+           handles.dlpindex(idx-1,:)=[framenumber num2str(line1_scan{2})];
+       end
+           
     else
         flag = 1;  % END OF FILE
     end
