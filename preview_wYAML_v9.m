@@ -306,10 +306,25 @@ val=double(get(f,'CurrentCharacter'));
             else
                 msgbox('That number is not valid')
             end
-            
+        case 45 % -  (jump to previous DLP off->on event)
+            %find all off->on events
+            q=find(handles.dlpindex(:,3)==1);
+            %Find the most recent off->on event
+            current_frame = max(q(find(q<current_frame)));
+            clear q;
+        
+        case 43 % +  (jump to next DLP off->on event)
+            %find all off->on events
+            q=find(handles.dlpindex(:,3)==1);
+            %Find the next off->on event
+            current_frame = min(q(find(q>current_frame)));
+            clear q;
         otherwise
     end
-    if current_frame < 1 
+    if isempty(current_frame)
+        current_frame=old_frame;
+    end
+    if current_frame < 1  
         current_frame = 1;
     end
     set(handles.edit_currentframe, 'String', num2str(current_frame));
@@ -1105,13 +1120,16 @@ while ~flag
         end
        %Now let's also check the status of the DLP... is it on or off?
        if strcmp(line1_scan{1},'DLPIsOn:')
-           handles.dlpindex(idx-1,:)=[framenumber num2str(line1_scan{2})];
+           handles.dlpindex(idx-1,:)=[framenumber str2num(line1_scan{2})];
        end
            
     else
         flag = 1;  % END OF FILE
     end
 end
+%Make the third column be an index of when the dlp transitions
+handles.dlpindex= [handles.dlpindex handles.dlpindex(:,2)-circshift(handles.dlpindex(:,2),1)]
+
 fclose(f);
 close(h);
 
