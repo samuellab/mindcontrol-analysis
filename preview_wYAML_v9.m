@@ -22,7 +22,7 @@ function varargout = preview_wYAML_v9(varargin)
 
 % Edit the above text to modify the response to help preview_wYAML_v9
 
-% Last Modified by GUIDE v2.5 26-Feb-2010 12:24:07
+% Last Modified by GUIDE v2.5 15-Apr-2010 17:17:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -268,8 +268,7 @@ filetype = contents{get(handles.popupmenu1,'Value')};
 current_frame = str2num(get(handles.edit_currentframe, 'String'));
 
 
-% handles.frameindex(str2num(get(handles.edit_currentframe, 'String')),1) 
-% ANDY!! -> change this to be the HUDS frame, not the current frame
+ 
 prefix = get(handles.edit_prefix, 'String');
 numspec = get(handles.edit15, 'String');
 
@@ -301,7 +300,7 @@ val=double(get(f,'CurrentCharacter'));
             set(handles.edit_T4, 'String', num2str(current_frame));
         case 103 %g
             hframe=str2num(char(newid('Go to HUDS frame number:','Jump to HUDS frame number')));
-            mframe=find(handles.frameindex(:,1)==hframe)
+            mframe=find(handles.frameindex(:,1)==hframe);
             if ~isempty(mframe)
                 current_frame=mframe;
             else
@@ -314,6 +313,9 @@ val=double(get(f,'CurrentCharacter'));
         current_frame = 1;
     end
     set(handles.edit_currentframe, 'String', num2str(current_frame));
+    
+    %Find hframe (HUDS) corresponding to mframe (movie) and set that. 
+    set(handles.HUDSFrame, 'String', num2str(handles.frameindex(current_frame,1)));
 
     try
         img = load_img(handles,current_frame);   
@@ -1512,7 +1514,11 @@ assignin('base', 'curvdata', handles.curvdata);
 assignin('base', 'curvdatafiltered', handles.curvdatafiltered);
 assignin('base', 'curvdatafiltered_t', handles.curvdatafiltered_t);
 
-tmp=[get(handles.edit_prefix, 'String') '_' get(handles.edit_T1, 'String') '-' get(handles.edit_T4, 'String') '.mat'];
+
+%create a filenume that uses the HUDS frame number
+tmp=[get(handles.edit_prefix, 'String') '_' ...
+    num2str(handles.frameindex(str2num( get(handles.edit_T1, 'String') ),1))...
+    '-' num2str(handles.frameindex(str2num( get(handles.edit_T4, 'String') ),1)) '.mat'];
 [filename pathname ] = uiputfile('*.mat', tmp, tmp);
 save([pathname filename]);
 
@@ -1647,3 +1653,26 @@ tmp=[get(handles.edit_prefix, 'String') '.mat'];
 [filename pathname ] = uigetfile('*.mat', tmp, tmp);
 load([pathname filename]);
 
+
+
+
+function HUDSFrame_Callback(hObject, eventdata, handles)
+% hObject    handle to HUDSFrame (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of HUDSFrame as text
+%        str2double(get(hObject,'String')) returns contents of HUDSFrame as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function HUDSFrame_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to HUDSFrame (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
