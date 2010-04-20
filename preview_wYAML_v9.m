@@ -1463,8 +1463,9 @@ plot(rand(1,10));       %# Plot some random data
 %ylabel(gca,'scale 1');  %# Add a label to the left y axis
 axesPosition = get(gca,'Position');          %# Get the current axes position
 hNewAxes = axes('Position',axesPosition,...  %# Place a new axes on top...
-                'Color','none',...           %#   ... with no background color
-                'YLim',[ str2num(get(handles.edit_T1, 'String')); str2num(get(handles.edit_T4, 'String'))],...            %#   ... and a different scale
+                'Color','none',...           %#   ... with no background color 
+                'YLim',[ handles.frameindex(str2num(get(handles.edit_T1, 'String')),1);...
+                handles.frameindex(str2num(get(handles.edit_T4, 'String')),1)],...            %#   ... and a different scale
                 'YAxisLocation','right',...  %#   ... located on the right
                 'XTick',[]);                 %#   ... and with no x tick marks
 ylabel(hNewAxes,'scale 2');  %# Add a label to the right y axis
