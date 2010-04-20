@@ -1445,18 +1445,33 @@ subplot(231);
 max0 = max(max(abs(handles.curvdata * numcurvpts)));
 imagesc(handles.curvdata * numcurvpts, [-10 10]); hold on;
 colormap(redbluecmap(1)); 
-colorbar;
+%colorbar %took out colorbar because I don't think its necessary
 seg1 = handles.IllumSegCenter_data - handles.IllumSegRadius_data;
 seg2 = handles.IllumSegCenter_data + handles.IllumSegRadius_data;
 T1 = str2num(get(handles.edit_T1, 'String'));
 T2 = str2num(get(handles.edit_T2, 'String'));
 T3 = str2num(get(handles.edit_T3, 'String'));
+
 if T2 > T1
     plot([0 numcurvpts], [T2-T1 T2-T1], '--w');
 end
 if T3 > T1
     plot([0 numcurvpts], [T3-T1 T3-T1], '--w');
 end
+
+plot(rand(1,10));       %# Plot some random data
+%ylabel(gca,'scale 1');  %# Add a label to the left y axis
+axesPosition = get(gca,'Position');          %# Get the current axes position
+hNewAxes = axes('Position',axesPosition,...  %# Place a new axes on top...
+                'Color','none',...           %#   ... with no background color
+                'YLim',[ str2num(get(handles.edit_T1, 'String')); str2num(get(handles.edit_T4, 'String'))],...            %#   ... and a different scale
+                'YAxisLocation','right',...  %#   ... located on the right
+                'XTick',[]);                 %#   ... and with no x tick marks
+ylabel(hNewAxes,'scale 2');  %# Add a label to the right y axis
+
+
+
+
 subplot(234);
 imagesc(handles.curvdata>0 ); hold on;
 plot_illum_lines(handles);
