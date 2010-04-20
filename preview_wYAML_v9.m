@@ -276,7 +276,7 @@ f=gcf;
 val=double(get(f,'CurrentCharacter'));
 % idx = str2num(get(handles.text2, 'String'));
     old_frame = current_frame;
-%     disp(val);
+     disp(val);
     switch val
         case 28  % left arrow
             current_frame=current_frame-1;
@@ -319,6 +319,28 @@ val=double(get(f,'CurrentCharacter'));
             %Find the next off->on event
             current_frame = min(q(find(q>current_frame)));
             clear q;
+        case 109% m for magic
+            buff=str2num(char(newid('Enter number of frames before and after dlp event:','Magically assign a temporal region of interest')));
+            
+            %find the nearest off->on event
+            q=find(handles.dlpindex(:,3)==1)
+            [blah, ind]=min(abs(q-current_frame))
+            t2=q(ind);
+            clear q;
+            
+            %find the subsequent on->off event
+            q=find(handles.dlpindex(:,3)==-1);
+            t3=min(q(find(q>t2)));
+            clear q;
+            t1=t2-buff;
+            t4=t3+buff;
+            
+            
+             set(handles.edit_T1, 'String', num2str(t1));
+             set(handles.edit_T2, 'String', num2str(t2));
+             set(handles.edit_T3, 'String', num2str(t3));
+             set(handles.edit_T4, 'String', num2str(t4));
+             
         otherwise
     end
     if isempty(current_frame)
