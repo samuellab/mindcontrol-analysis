@@ -17,14 +17,33 @@ xmin=0;
   fitTanh=fittype('A*tanh(beta*(x-x0))+B','options',s)
  x= 1:length(data);
  [tanhCoef,tanhGOF]=fit(x',data',fitTanh);
+
  A=tanhCoef.A;
  beta=tanhCoef.beta;
  x0=tanhCoef.x0;
  B=tanhCoef.B;
  y=A*tanh(beta.*(x-x0))+B;
  
- figure; hold on;
- plot(x,data)
- plot(x,y,'m','linewidth',2)
- plot([x0+1/beta x0-1/beta],[A+B B-A],'ro','linewidth',3);
  
+ c1=[x0+1/beta; A+B];
+ c2=[x0-1/beta; B-A];
+ 
+ 
+ 
+%  %Plot Output:
+%
+%  figure; hold on;
+%  A=tanhCoef.A;
+%  beta=tanhCoef.beta;
+%  x0=tanhCoef.x0;
+%  B=tanhCoef.B;
+%  y=A*tanh(beta.*(x-x0))+B;
+%  
+%  plot(x,data)
+%  plot(x,y,'m','linewidth',2)
+%  plot([x0+1/beta x0-1/beta],[A+B B-A],'ro','linewidth',3);
+%  figure; hold on;
+%  plot(data,x)
+%  plot(y,x,'m','linewidth',2)
+%  plot([A+B B-A],[x0+1/beta x0-1/beta],'ro','linewidth',3);
+%  
