@@ -1459,8 +1459,7 @@ if T3 > T1
     plot([0 numcurvpts], [T3-T1 T3-T1], '--w');
 end
 
-plot(rand(1,10));       %# Plot some random data
-%ylabel(gca,'scale 1');  %# Add a label to the left y axis
+
 axesPosition = get(gca,'Position');          %# Get the current axes position
 hNewAxes = axes('Position',axesPosition,...  %# Place a new axes on top...
                 'Color','none',...           %#   ... with no background color 
@@ -1468,7 +1467,7 @@ hNewAxes = axes('Position',axesPosition,...  %# Place a new axes on top...
                 handles.frameindex(str2num(get(handles.edit_T4, 'String')),1)],...            %#   ... and a different scale
                 'YAxisLocation','right',...  %#   ... located on the right
                 'XTick',[]);                 %#   ... and with no x tick marks
-ylabel(hNewAxes,'scale 2');  %# Add a label to the right y axis
+ylabel(hNewAxes,'hframe');  %# Add a label to the right y axis
 
 
 
@@ -1504,6 +1503,8 @@ plot_illum_lines(handles);
 colorbar;
 
 guidata(hObject, handles);  % update GUI data
+velocityanalysis(handles);
+
 
 function plot_illum_lines(handles)
 % disp('plot_illum_lines');

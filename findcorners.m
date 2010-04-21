@@ -14,7 +14,7 @@ xmin=0;
       'Lower',[ymin, ymin, -Inf, xmin],...
      'Upper',[ymax, ymax, Inf, xmax],...
      'Startpoint',[(ymax-ymin)/2, (ymax-ymin)/2,1,(xmax-xmin)/2]);
-  fitTanh=fittype('A*tanh(beta*(x-x0))+B','options',s)
+  fitTanh=fittype('A*tanh(beta*(x-x0))+B','options',s);
  x= 1:length(data);
  [tanhCoef,tanhGOF]=fit(x',data',fitTanh);
 
