@@ -1,0 +1,10 @@
+function dg = dgausskernel (sigma)
+%function dg = dgausskernel (sigma)
+gK = gaussKernel(sigma);
+dg = zeros(size(gK));
+dgd = diff(gK);
+dg(1:(end-1)) = dgd;
+dg(2:end) = dg(2:end) + dgd;
+dg = dg/2;
+%dg1 = diff(gaussKernel(sigma));
+%dg = diff(gaussKernel(sigma));
