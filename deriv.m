@@ -1,13 +1,17 @@
 function [dx,validinds] = deriv(x,sigma)
 %function [dx,validinds] = deriv(x,sigma)
+%Always takes the derivitave in the 1st dimension (i think)
+%This is a modification of Marc Gershow's deriv function
 
-if (size(x,1) > size(x,2))
-    xx = x';
-    t = 1;
-else
-    xx = x;
-    t = 0;
-end
+% if (size(x,1) > size(x,2))
+%     xx = x';
+%     t = 1;
+% else
+%     xx = x;
+%     t = 0;
+% end
+xx=x
+t=0;
 dg = reshape(dgausskernel(sigma),1,[]);
 
 padfront = ceil ((length(dg)-1) / 2);
