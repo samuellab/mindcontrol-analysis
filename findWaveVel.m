@@ -14,7 +14,7 @@ dkdx=deriv(curvdata,delx);
 
 for j=1:size(dkdt,1) %note dkdt is one shorter than dkdtx in this dimension
    % plot(dkdx(j,:),dkdt(j,1:end-1),'o')
-    slope(j)=dkdx(j,:)/dkdt(j,:);
+    slope(j)=-dkdx(j,:)/dkdt(j,:);
 end
 out=slope;
 

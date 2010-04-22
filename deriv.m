@@ -10,7 +10,7 @@ function [dx,validinds] = deriv(x,sigma)
 %     xx = x;
 %     t = 0;
 % end
-xx=x
+xx=x;
 t=0;
 dg = reshape(dgausskernel(sigma),1,[]);
 
