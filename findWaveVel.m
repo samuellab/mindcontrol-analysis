@@ -12,13 +12,19 @@ function out= findWaveVel(curvdata,delt,delx);
 dkdt= deriv(curvdata',delt)';
 dkdx=deriv(curvdata,delx);
 
+figure;
 for j=1:size(dkdt,1) %note dkdt is one shorter than dkdtx in this dimension
    % plot(dkdx(j,:),dkdt(j,1:end-1),'o')
     slope(j)=-dkdx(j,:)/dkdt(j,:);
+    clf;
+    hold on;
+    plot(dkdt(j,:),dkdx(j,:),'.');
+    plot(dkdt(j,:),-dkdt(j,:).*slope(j),'ro');
 end
 out=slope;
 
-
+%resid contains the sum of the absolute value of the residual
+for j=1:size(dkdt,1);resid(j)=sum( sqrt((slope(j).*dkdt(j,:)).^2 ) ) ;end
  
 
  

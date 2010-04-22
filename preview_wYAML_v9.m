@@ -1506,6 +1506,7 @@ guidata(hObject, handles);  % update GUI data
 velocityanalysis(handles);
 
 
+
 function plot_illum_lines(handles)
 % disp('plot_illum_lines');
 numcurvpts = str2num(get(handles.edit_numcurvpts, 'String'));
