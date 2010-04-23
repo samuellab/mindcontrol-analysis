@@ -11,7 +11,6 @@ ps = zeros([1 (size(curvdata,1)-1)]);
 
 fracCrop=.1;
 
-
 %pre allocate x shift
 xs = 1:size(curvdata,2);
 

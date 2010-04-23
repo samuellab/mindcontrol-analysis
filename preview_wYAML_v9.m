@@ -320,7 +320,8 @@ val=double(get(f,'CurrentCharacter'));
             current_frame = min(q(find(q>current_frame)));
             clear q;
         case 109% m for magic
-            buff=str2num(char(newid('Enter number of frames before and after dlp event:','Magically assign a temporal region of interest')));
+            prebuff=str2num(char(newid('Enter number of frames BEFORE dlp event:','Magically assign a temporal region of interest')));
+            postbuff=str2num(char(newid('Enter number of frames AFTER dlp event:','Magically assign a temporal region of interest')));
             
             %find the nearest off->on event
             q=find(handles.dlpindex(:,3)==1)
@@ -332,8 +333,8 @@ val=double(get(f,'CurrentCharacter'));
             q=find(handles.dlpindex(:,3)==-1);
             t3=min(q(find(q>t2)));
             clear q;
-            t1=t2-buff;
-            t4=t3+buff;
+            t1=t2-prebuff;
+            t4=t3+postbuff;
             
             
              set(handles.edit_T1, 'String', num2str(t1));
