@@ -1699,7 +1699,7 @@ function pushbutton_autoT2_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 d1 = diff(handles.DLPIsOn_data,1,2);
-d2 = find(d1,2, 'first')
+d2 = find(d1,2, 'first');
 T1 = str2num(get(handles.edit_T1, 'String'));
 switch length(d2)
     case 1
