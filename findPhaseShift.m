@@ -29,4 +29,4 @@ for j = 1:length(ps)
 end
 
 %Sum the individual phase shifts to get a cumulitive phase shift
-ps = cumsum(ps);
+%ps = cumsum(ps);

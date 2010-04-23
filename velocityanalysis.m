@@ -9,20 +9,23 @@ absFrameNumberStart=handles.frameindex(str2num(get(handles.edit_T1, 'String')),1
 absFrameNumberEnd=handles.frameindex(str2num(get(handles.edit_T4, 'String')),1);
 
 
-%Find Wave Velocity: 
-%Note nu is in units of percent body length per frame
+%Find Phase Shift per frame: 
+ps=findPhaseShift(curvdata);
 
-%First let's do some serious smoothing:
-mygauss=fspecial('gaussian',[12,10],4);
-smoothcurv=conv2(curvdata,mygauss,'valid');
-v=findWaveVel(smoothcurv,1,1);
+%Seconds per frame
+
+spf=(tstamp(end)-tstamp(1))/length(tstamp); %seconds per frame
+
+
+%Find the velocity
+% pass the the phase shift through a 3-frame-wide median filter 
+% convert from percent bodylength per frame to body length per second
+nu=ps ./ (100*spf);
+
 
 %We would like to get that into fractional body length per second
 %So we must multpily by (1/(100))*(1/ ( seconds /frame) );
-spf=(tstamp(end)-tstamp(1))/length(tstamp); %seconds per frame
-nu=v.*(1/100).*(1/spf);
 
-%Find the Corners:
 [tanhCoef,tanhGOF, c1, c2]= findcorners(nu);
  x=1:length(nu);
  
@@ -36,7 +39,7 @@ nu=v.*(1/100).*(1/spf);
  y=A*tanh(beta.*(x-x0))+B;
 
  hold on;
- subplot(1,3,1)
+ subplot(1,2,1)
  imagesc(curvdata*size(curvdata,2), [-10,10]);
  colormap(redbluecmap(1)); 
  title('Curvature')
@@ -50,30 +53,13 @@ if T3 > T1
     plot([0 size(curvdata,2)], [T3-T1 T3-T1], '--w');
 end
 
- hold on;
- subplot(1,3,2)
- imagesc(smoothcurv*size(curvdata,2), [-10,10]);
- colormap(redbluecmap(1)); 
- title('Curvature')
- xlabel('<- Head     Tail->')
- ylims=get(gca,'Ylim');
-hold on;
-if T2 > T1
-    plot([0 size(curvdata,2)], [T2-T1 T2-T1], '--w');
-end
-if T3 > T1
-    plot([0 size(curvdata,2)], [T3-T1 T3-T1], '--w');
-end
-
-
-
 
 
 
 
 
  
- subplot(1,3,3)
+ subplot(1,2,2)
  hold on;
  plot(nu,x)
  plot(y,x,'m','linewidth',2)
@@ -91,7 +77,6 @@ if T3 > T1
 end
 
 plot([0 0],[0, length(nu)],'--b')
-
 
 
  set(gca,'Box','off');
