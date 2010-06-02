@@ -66,9 +66,8 @@ end
  plot([A+B B-A],[x0+1/beta x0-1/beta],'ro','linewidth',3);
 set(gca,'YDir','reverse');
 set(gca,'Ylim',ylims);
-title('Wave velocity')
+title('Phase velocity')
 xlabel('body length / second')
-
 if T2 > T1
     plot([min(nu) max(nu)], [T2-T1 T2-T1], '--r');
 end
@@ -89,3 +88,4 @@ hNewAxes = axes('Position',axesPosition,...  %# Place a new axes on top...
                 'XTick',[],...                  %#   ... and with no x tick marks
                'YDir','reverse',...
                 'Box','off');                 %ylabel(hNewAxes,'hframe');  %# Add a label to the right y axis
+ylabel('HUDS Frame number');
