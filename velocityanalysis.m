@@ -13,14 +13,17 @@ absFrameNumberEnd=handles.frameindex(str2num(get(handles.edit_T4, 'String')),1);
 ps=findPhaseShift(curvdata);
 
 %Seconds per frame
-
 spf=(tstamp(end)-tstamp(1))/length(tstamp); %seconds per frame
 
 
 %Find the velocity
+
 % pass the the phase shift through a 3-frame-wide median filter 
+% psFilt=medfilt1(ps,3)
+
+psFilt=ps; %filtering doesn't actually help
 % convert from percent bodylength per frame to body length per second
-nu=ps ./ (100*spf);
+nu=psFilt ./ (100*spf);
 
 
 %We would like to get that into fractional body length per second
@@ -45,6 +48,7 @@ nu=ps ./ (100*spf);
  title('Curvature')
  xlabel('<- Head     Tail->')
  ylims=get(gca,'Ylim');
+ ylabel('Time (Rel Frame #)');
 hold on;
 if T2 > T1
     plot([0 size(curvdata,2)], [T2-T1 T2-T1], '--w');
