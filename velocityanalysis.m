@@ -12,6 +12,7 @@ absFrameNumberEnd=handles.frameindex(str2num(get(handles.edit_T4, 'String')),1);
 %Find Phase Shift per frame: 
 ps=findPhaseShift(curvdata);
 
+
 %Seconds per frame
 spf=(tstamp(end)-tstamp(1))/length(tstamp); %seconds per frame
 
@@ -21,7 +22,21 @@ spf=(tstamp(end)-tstamp(1))/length(tstamp); %seconds per frame
 % pass the the phase shift through a 3-frame-wide median filter 
 % psFilt=medfilt1(ps,3)
 
-psFilt=ps; %filtering doesn't actually help
+
+psFilt=ps; 
+
+
+%%% Replace outliers with the median value for a large window
+threshold=3; %Number of standard deviations away from local median to be called an outlier
+medfiltwindow=30;
+
+medianfiltered=medfilt1(ps,medfiltwindow);
+
+%find outliers
+outliers=find( abs(medianfiltered -psFilt)>std(psFilt)*threshold);
+%replace outliers with median value
+psFilt(outliers)=medianfiltered(outliers);
+
 % convert from percent bodylength per frame to body length per second
 nu=psFilt ./ (100*spf);
 
