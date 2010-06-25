@@ -4,7 +4,6 @@
 #leifer@fas.harvard.edu
 import string, sys, os
 
-print 'You have ' + str(len(sys.argv)) + 'arguments'
 usage =  """Usage: showAnnotation.py D:\\Path\\to\\index.yml expString [framenumber [numberAdditionaFrames] ]
 
 Display the annotations associated with an experiment whose filename contains expString. Optionally display only annotations to the framenumber specified, and further optionally annotations contained in the subsequent additional number of frames.
