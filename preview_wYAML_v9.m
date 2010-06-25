@@ -23,7 +23,7 @@ function varargout = preview_wYAML_v9(varargin)
 
 % Edit the above text to modify the response to help preview_wYAML_v9
 
-% Last Modified by GUIDE v2.5 15-Apr-2010 17:17:57
+% Last Modified by GUIDE v2.5 25-Jun-2010 16:48:53
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -268,7 +268,10 @@ filetype = contents{get(handles.popupmenu1,'Value')};
 %the box tells us the current HUDS frame
 current_frame = str2num(get(handles.edit_currentframe, 'String'));
 
-
+filename=handles.YAML_filename;
+pathname=handles.YAML_pathname;
+[blah,text]=dos(['python showAnnotation.py ',pathname,'index.yml ', filename(1:(end-5)), ' ', num2str(current_frame)]);
+set(handles.ContextualAnnotations,'String',text);
  
 prefix = get(handles.edit_prefix, 'String');
 numspec = get(handles.edit15, 'String');
@@ -1100,12 +1103,25 @@ function pushbutton_loadYAML_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+%Actually Load the YAML file:
+
 % initialize or clear YAML-specific variables
 % handles.CamFrameNumberYAML = [];
 handles.YAML_data = [];
-
+handles.YAML_filename='';
+handles.YAML_pathname='';
 [ filename pathname ]  = uigetfile([get(handles.edit_prefix, 'String') '.yaml']);
 yamlfile = [pathname filename];
+
+%Load in the index file. 
+%Assume for now that the index file is simply index.yml in the same
+%directory
+handles.YAML_filename=filename;
+handles.YAML_pathname=pathname;
+[blah,text]=dos(['python showAnnotation.py ',pathname,'index.yml ', filename(1:(end-5))]);
+set(handles.FullAnnotations,'String',text);
+
+
 set(handles.edit_yamlfile, 'String', yamlfile);
 
 f = fopen(yamlfile, 'r');
@@ -1735,6 +1751,52 @@ function HUDSFrame_Callback(hObject, eventdata, handles)
 % --- Executes during object creation, after setting all properties.
 function HUDSFrame_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to HUDSFrame (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function FullAnnotations_Callback(hObject, eventdata, handles)
+% hObject    handle to FullAnnotations (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of FullAnnotations as text
+%        str2double(get(hObject,'String')) returns contents of FullAnnotations as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function FullAnnotations_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to FullAnnotations (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function ContextualAnnotations_Callback(hObject, eventdata, handles)
+% hObject    handle to ContextualAnnotations (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of ContextualAnnotations as text
+%        str2double(get(hObject,'String')) returns contents of ContextualAnnotations as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function ContextualAnnotations_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to ContextualAnnotations (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
