@@ -268,28 +268,29 @@ filetype = contents{get(handles.popupmenu1,'Value')};
 %the box tells us the current HUDS frame
 current_frame = str2num(get(handles.edit_currentframe, 'String'));
 
-filename=handles.YAML_filename;
-pathname=handles.YAML_pathname;
-[blah,text]=dos(['python showAnnotation.py ',pathname,'index.yml ', filename(1:(end-5)), ' ', num2str(current_frame)]);
-set(handles.ContextualAnnotations,'String',text);
- 
 prefix = get(handles.edit_prefix, 'String');
 numspec = get(handles.edit15, 'String');
+
+UpdateAnnotations=1;
 
 f=gcf;
 val=double(get(f,'CurrentCharacter'));
 % idx = str2num(get(handles.text2, 'String'));
     old_frame = current_frame;
-     disp(val);
+     %disp(val);
     switch val
         case 28  % left arrow
             current_frame=current_frame-1;
+            UpdateAnnotations=0;
         case 29  % right arrow
             current_frame=current_frame+1;
+            UpdateAnnotations=0;
         case 30  % up arrow
             current_frame=current_frame-10;
+            UpdateAnnotations=0;
         case 31  % down arrow
             current_frame=current_frame+10;
+            UpdateAnnotations=0;
         case 97  % A
             current_frame=current_frame-20;
         case 115  % S
@@ -360,8 +361,19 @@ val=double(get(f,'CurrentCharacter'));
     set(handles.HUDSFrame, 'String', num2str(handles.frameindex(current_frame,1)));
 
     try
+        %Update the image
         img = load_img(handles,current_frame);   
         display_img(handles,img);
+     
+        %Update the Contextual annotation display
+        if UpdateAnnotations
+            filename=handles.YAML_filename;
+            pathname=handles.YAML_pathname;
+            [blah,text]=dos(['python showAnnotation.py ',pathname,'index.yml ', filename(1:(end-5)), ' ', num2str(handles.frameindex(current_frame,1)), ' 3000']);
+            set(handles.ContextualAnnotations,'String',text);
+        end
+ 
+        
         set(handles.status, 'String', 'OK');
     catch
         current_frame = old_frame;
@@ -1120,7 +1132,7 @@ handles.YAML_filename=filename;
 handles.YAML_pathname=pathname;
 [blah,text]=dos(['python showAnnotation.py ',pathname,'index.yml ', filename(1:(end-5))]);
 set(handles.FullAnnotations,'String',text);
-
+set(handles.ContextualAnnotations,'String',text);
 
 set(handles.edit_yamlfile, 'String', yamlfile);
 
