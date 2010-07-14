@@ -1266,6 +1266,7 @@ handles.SegmentedCenterlinex_data = [];
 handles.SegmentedCenterliney_data = [];
 handles.ProtocolIsOn_data = [];
 handles.ProtocolStep_data = [];
+handles.nu = [];
 
 frame_start = str2num(get(handles.edit_T1,'String'));
 frame_end = str2num(get(handles.edit_T4,'String'));
@@ -1532,8 +1533,10 @@ imagesc(handles.curvdatafiltered_t_filtered >0); hold on;
 plot_illum_lines(handles);
 colorbar;
 
+%perform velocity analysis
+handles.nu=velocityanalysis(handles);
 guidata(hObject, handles);  % update GUI data
-velocityanalysis(handles);
+
 
 
 
@@ -1608,14 +1611,16 @@ assignin('base', 'cv2i_data', handles.cv2i_data);
 assignin('base', 'curvdata', handles.curvdata);
 assignin('base', 'curvdatafiltered', handles.curvdatafiltered);
 assignin('base', 'curvdatafiltered_t', handles.curvdatafiltered_t);
-
+assignin('base', 'nu', handles.nu);
 
 %create a filenume that uses the HUDS frame number
 tmp=[get(handles.edit_prefix, 'String') '_' ...
     num2str(handles.frameindex(str2num( get(handles.edit_T1, 'String') ),1))...
     '-' num2str(handles.frameindex(str2num( get(handles.edit_T4, 'String') ),1)) '.mat'];
 [filename pathname ] = uiputfile('*.mat', tmp, tmp);
+phaseVelocity=handles.nu;
 save([pathname filename]);
+
 
 fnamefig = [pathname filename(1:end-4) '.tif'];
 figure(2);

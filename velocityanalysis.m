@@ -1,5 +1,5 @@
 
-function velocityanalysis(handles)
+function nu=velocityanalysis(handles)
 curvdata=handles.curvdata;
  T1 = str2num(get(handles.edit_T1, 'String'));
 T2 = str2num(get(handles.edit_T2, 'String'));
@@ -38,7 +38,7 @@ outliers=find( abs(medianfiltered -psFilt)>std(psFilt)*threshold);
 psFilt(outliers)=medianfiltered(outliers);
 
 % convert from percent bodylength per frame to body length per second
-nu=psFilt ./ (100*spf);
+nu= -psFilt ./ (100*spf);
 
 
 %We would like to get that into fractional body length per second
@@ -71,8 +71,6 @@ end
 if T3 > T1
     plot([0 size(curvdata,2)], [T3-T1 T3-T1], '--w');
 end
-
-
 
 
 
