@@ -1434,6 +1434,10 @@ numcurvpts = str2num(get(handles.edit_numcurvpts, 'String'));
 decim = str2num(get(handles.edit3, 'String'));
 for absframe=frame_start:frame_end
     j = absframe - frame_start + 1;
+    windowsize=15;
+    %find the curvature;
+    AndyCurv=findcurvature(handles.SegmentedCenterlinex_data(j,:),handles.SegmentedCenterliney_data(j,:),windowsize);
+    
     xy = [handles.SegmentedCenterlinex_data(j,:); ...
         handles.SegmentedCenterliney_data(j,:)];
     df = diff(xy,1,2); 
@@ -1448,7 +1452,9 @@ for absframe=frame_start:frame_end
     handles.cv2i_data(k,:,:) = cv2i;
     df2 = diff(cv2i,1,1);
     atdf2 = unwrap(atan2(-df2(:,2), df2(:,1)));
-    curv = unwrap(diff(atdf2,1)); 
+    curv = unwrap(diff(atdf2,1));
+    
+    
     handles.curvdata(j,:) = curv';
     if get(handles.radiobutton_showimg, 'Value')
         img = load_img(handles,absframe);

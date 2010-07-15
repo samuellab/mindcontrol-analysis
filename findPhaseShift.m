@@ -1,6 +1,16 @@
-function ps = findPhaseShift(curvdata)
+function ps = findPhaseShift(curvdata,headCrop,tailCrop,alpha,sigma)
 % Find the phase shift by shifting in x the the n'th frame and comparing it
 % to the (n+1)th frame and recording the shift that gets the best fit.
+% 
+% The curvature data is low pass filtered with sigma specified by sigma.
+%
+% Additionally, to filter out noise, the nth frame is averaged with the
+% (n-1)th from accordint to a weighting factor, alpha. 
+%
+% Moreover the head is cropped a certain porectange according to headCrop, 
+% and a percentage of the tail is cropped according to tailCrop.
+%
+%
 % written by Marc Gershow
 % Modified by Andrew Leifer
 
@@ -39,6 +49,7 @@ for j = 1:length(ps)
        pause(0.05);
    end
 end
+
 
 %Sum the individual phase shifts to get a cumulitive phase shift
 %ps = cumsum(ps);
