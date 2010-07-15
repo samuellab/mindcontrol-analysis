@@ -1432,12 +1432,23 @@ delay_time = str2num(get(handles.edit_delay, 'String'));
 spline_p = str2num(get(handles.edit_spline_p, 'String'));
 numcurvpts = str2num(get(handles.edit_numcurvpts, 'String'));
 decim = str2num(get(handles.edit3, 'String'));
+
+
+%Pull out the segmented centerline data;
+%%%%
+% Andy's Addition: low pass filter the position of each point on the 
+% the centerline thorugh time!
+%%%%
+sigma=4; %roughly 4frames * 1/(40fps) = 100ms
+xx=lowpass1d(handles.SegmentedCenterlinex_data,sigma);
+yy=lowpass1d(handles.SegmentedCenterliney_data,sigma);
+
+%Chris's curve finding function
 for absframe=frame_start:frame_end
     j = absframe - frame_start + 1;
 
     
-    xy = [handles.SegmentedCenterlinex_data(j,:); ...
-        handles.SegmentedCenterliney_data(j,:)];
+    xy = [xx(j,:); yy(j,:)]; %use the low-pass filtered centerline data
     df = diff(xy,1,2); 
     t = cumsum([0, sqrt([1 1]*(df.*df))]); 
     cv = csaps(t,xy,spline_p);
