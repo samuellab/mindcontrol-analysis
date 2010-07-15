@@ -18,24 +18,10 @@ spf=(tstamp(end)-tstamp(1))/length(tstamp); %seconds per frame
 
 
 %Find the velocity
+% sigma=1;
+% psFilt=lowpass1d(ps,sigma); 
+psFilt=ps; %don't do any filtering on the velocity. we can do that later.
 
-% pass the the phase shift through a 3-frame-wide median filter 
-% psFilt=medfilt1(ps,3)
-
-
-psFilt=ps; 
-
-
-%%% Replace outliers with the median value for a large window
-threshold=3; %Number of standard deviations away from local median to be called an outlier
-medfiltwindow=30;
-
-medianfiltered=medfilt1(ps,medfiltwindow);
-
-%find outliers
-outliers=find( abs(medianfiltered -psFilt)>std(psFilt)*threshold);
-%replace outliers with median value
-psFilt(outliers)=medianfiltered(outliers);
 
 % convert from percent bodylength per frame to body length per second
 nu= -psFilt ./ (100*spf);
