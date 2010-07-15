@@ -1434,9 +1434,7 @@ numcurvpts = str2num(get(handles.edit_numcurvpts, 'String'));
 decim = str2num(get(handles.edit3, 'String'));
 for absframe=frame_start:frame_end
     j = absframe - frame_start + 1;
-    windowsize=15;
-    %find the curvature;
-    AndyCurv=findcurvature(handles.SegmentedCenterlinex_data(j,:),handles.SegmentedCenterliney_data(j,:),windowsize);
+
     
     xy = [handles.SegmentedCenterlinex_data(j,:); ...
         handles.SegmentedCenterliney_data(j,:)];
