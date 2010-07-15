@@ -50,6 +50,9 @@ for j = 1:length(ps)
    end
 end
 
+%implement lowpass1d filter for output
+%ps=lowpass1d(ps,
+
 
 %Sum the individual phase shifts to get a cumulitive phase shift
 %ps = cumsum(ps);
