@@ -328,14 +328,11 @@ val=double(get(f,'CurrentCharacter'));
             %Ask the user for input in terms of seconds.
             seconds_pre=str2num(char(newid('Enter number of seconds BEFORE dlp event:','Magically assign a temporal region of interest')));
             seconds_post=str2num(char(newid('Enter number of seconds AFTER dlp event:','Magically assign a temporal region of interest')));
-            
-            %Generate the time index for the entire run
-            time=handles.sElapsed_data+handles.msRemElapsed_data;
-            
+
             
             %find the nearest off->on event
-            q=find(handles.dlpindex(:,3)==1)
-            [blah, ind]=min(abs(q-current_frame))
+            q=find(handles.dlpindex(:,3)==1);
+            [blah, ind]=min(abs(q-current_frame));
             t2=q(ind);
             clear q;
             
@@ -346,8 +343,8 @@ val=double(get(f,'CurrentCharacter'));
             
             
             %Find the frame nubmer corresponding to the timestamp before and after that we want
-            t1=findClosest(time,time(t2)-seconds_pre);
-            t4=findClosest(time,time(t3)+seconds_post);
+            t1=findClosest(handles.time,handles.time(t2)-seconds_pre);
+            t4=findClosest(handles.time,handles.time(t3)+seconds_post);
             
             
              set(handles.edit_T1, 'String', num2str(t1));
@@ -1153,6 +1150,7 @@ idx = 1;
 linenumber = 0;
 handles.frameindex = [];  
 handles.dlpindex = [];
+handles.timeindex= [];
 numframes = str2num(get(handles.edit_numframes, 'String'));
 disp(['With ' num2str(numframes) '  frames']);
 % Each row of frameindex contains this info:
@@ -1181,13 +1179,29 @@ while ~flag
        if strcmp(line1_scan{1},'DLPIsOn:')
            handles.dlpindex(idx-1,:)=[framenumber str2num(line1_scan{2})];
        end
+       
+       %Finally, let's also record the time stamps for each frame
+       %This is useful to be able to seek a frame by the time, instead of
+       %frame number
+       
+       if strcmp(line1_scan{1},'sElapsed:')
+            seconds(idx-1) =str2num(line1_scan{2});
+       end
+       if strcmp(line1_scan{1},'msRemElapsed:')
+            msRem(idx-1) =str2num(line1_scan{2});
+       end
+         
            
     else
         flag = 1;  % END OF FILE
     end
 end
-%Make the third column be an index of when the dlp transitions
+%handles.dlpindex= [internal(HUDS)framenumber,  DLPisON_or_OFF, DLPisTransitioningOn  ]
 handles.dlpindex= [handles.dlpindex handles.dlpindex(:,2)-circshift(handles.dlpindex(:,2),1)]
+
+handles.time = seconds+(10^-3)*msRem;
+clear seconds;
+clear msRem;
 
 fclose(f);
 close(h);
