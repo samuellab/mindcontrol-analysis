@@ -9,4 +9,7 @@ function [i] = findClosest(vector, value)
 %
 
 z=abs(vector-value);
-[i]=find(min(z)==z);
+[k]=find(min(z)==z);
+i=k(1); %choose the first one if there are multiple closest vectors.
+
+    

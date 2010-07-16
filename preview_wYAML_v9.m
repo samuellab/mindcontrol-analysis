@@ -1654,13 +1654,22 @@ tmp=[get(handles.edit_prefix, 'String') '_' ...
     num2str(handles.frameindex(str2num( get(handles.edit_T1, 'String') ),1))...
     '-' num2str(handles.frameindex(str2num( get(handles.edit_T4, 'String') ),1)) '.mat'];
 [filename pathname ] = uiputfile('*.mat', tmp, tmp);
+
+
+T1=str2num(get(handles.edit_T1, 'String'));
+T2=str2num(get(handles.edit_T2, 'String'));
+T3=str2num(get(handles.edit_T3, 'String'));
+T4=str2num(get(handles.edit_T4, 'String'));
+
 phaseVelocity=handles.nu;
 save([pathname filename]);
+save([pathname filename],'T1','T2','T3','T4','-append');
 
 
-fnamefig = [pathname filename(1:end-4) '.tif'];
-figure(2);
-saveas(gcf,fnamefig, 'tif');
+%Draws a figure. Not neccessary for me (Andy)/
+%fnamefig = [pathname filename(1:end-4) '.tif'];
+%figure(2);
+%saveas(gcf,fnamefig, 'tif');
 
 % 
 % prefix = get(handles.edit_prefix, 'String');

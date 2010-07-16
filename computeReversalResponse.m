@@ -71,7 +71,8 @@ if (t_startanal<0)
 end
 
 % Compute the average phase velocity prior to illumination
-v0=mean(phaseVelocity(findClosest( timeIndex, t_startanal):startIllum));
+f_start_anal=findClosest( timeIndex, t_startanal);
+v0=mean(phaseVelocity(f_start_anal:startIllum));
 
 %%%%%%
 % Short Response Analysis
@@ -106,17 +107,12 @@ rlong=  ( expectDist_long - actualDist_long ) /d_long;
 
 
 if DEBUG
-    v0
-    expectDist_short
-    actualDist_short
-    rshort
+
     
-    expectDist_long
-    actualDist_long
-    rlong
-    
-    figure; hold on; plot(phaseVelocity); plot([startIllum, endIllum],[0,0],'ro'); 
+    figure; hold on; 
+    plot(phaseVelocity); title(['R_s=' num2str(rshort) ' R_l=' num2str(rlong)]);plot([startIllum, endIllum],[0,0],'ro'); 
+    plot([f_start_anal, f_end_long],[0,0],'k-.');
     
     %plot markers showing end of short analysis and long analysis
-    plot([f_end_short, f_end_long],[0,0],'g^');
+    plot([f_end_short, f_end_long],[v0,v0],'g^');
 end
