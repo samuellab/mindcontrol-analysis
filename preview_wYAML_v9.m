@@ -325,8 +325,13 @@ val=double(get(f,'CurrentCharacter'));
             current_frame = min(q(find(q>current_frame)));
             clear q;
         case 109% m for magic
-            prebuff=str2num(char(newid('Enter number of frames BEFORE dlp event:','Magically assign a temporal region of interest')));
-            postbuff=str2num(char(newid('Enter number of frames AFTER dlp event:','Magically assign a temporal region of interest')));
+            %Ask the user for input in terms of seconds.
+            seconds_pre=str2num(char(newid('Enter number of seconds BEFORE dlp event:','Magically assign a temporal region of interest')));
+            seconds_post=str2num(char(newid('Enter number of seconds AFTER dlp event:','Magically assign a temporal region of interest')));
+            
+            %Generate the time index for the entire run
+            time=handles.sElapsed_data+handles.msRemElapsed_data;
+            
             
             %find the nearest off->on event
             q=find(handles.dlpindex(:,3)==1)
@@ -338,15 +343,17 @@ val=double(get(f,'CurrentCharacter'));
             q=find(handles.dlpindex(:,3)==-1);
             t3=min(q(find(q>t2)));
             clear q;
-            t1=t2-prebuff;
-            t4=t3+postbuff;
+            
+            
+            %Find the frame nubmer corresponding to the timestamp before and after that we want
+            t1=findClosest(time,time(t2)-seconds_pre);
+            t4=findClosest(time,time(t3)+seconds_post);
             
             
              set(handles.edit_T1, 'String', num2str(t1));
              set(handles.edit_T2, 'String', num2str(t2));
              set(handles.edit_T3, 'String', num2str(t3));
              set(handles.edit_T4, 'String', num2str(t4));
-             
         otherwise
     end
     if isempty(current_frame)
