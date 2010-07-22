@@ -1,4 +1,4 @@
-function [rshort rlong] = computeReversalResponse(phaseVelocity,timeIndex,f_startIllum,f_endIllum,t_analWin)
+function [r_short r_long] = computeReversalResponse(phaseVelocity,timeIndex,f_startIllum,f_endIllum,t_analWin)
 % This function computes the Reversal response of a worm after it was
 % illuminated.
 %
@@ -7,10 +7,10 @@ function [rshort rlong] = computeReversalResponse(phaseVelocity,timeIndex,f_star
 % startIllum is the frame at which the illumination begins
 % f_endIllum is the frame at which illumination ends
 % analysisWindow is a structure that sets the expected window time
-%     analysisWindow.beforeIllum   seconds to analyze before
-%           illumination
-%     analysisWindow.short
-%     analysisWindow.long
+%     t_analWin.beforeIllum   seconds to analyze before illumination
+%     t_analWin.short seconds to analyze post illum for the short window
+%     t_analWin.long  seconds to analyze after the short window for the
+%     long window
 %
 % Note: phaseVelocity should have N-1 elements, timeIndex has N elements
 %
@@ -39,7 +39,7 @@ DEBUG=true;
 if isempty(t_analWin)
     %applying default value for analysis windonw t_analWin
     t_analWin.beforeIllum=2; %2 seconds prior to a illum
-    t_analWin.short=1.5; %1.5 seconds post illumination
+    t_analWin.short=1.5; %1.5 seconds post illumination (so 3.5 seconds total)
     t_analWin.long=5.5; %6.5 secondps after the short window
 end
 
@@ -68,44 +68,60 @@ end
 %time that analysis begins
 t_startanal=timeIndex(f_startIllum)-t_analWin.beforeIllum;
 
-if (t_startanal<0)
-    error('Not enough lead time before the illumination begins.')
-end
+
+%time that analysis ends
+t_endanal=timeIndex(f_endIllum)+t_analWin.short+t_analWin.long;
+
+
+%Frame that analysis begins/ ends
+f_start_anal=findClosest( timeIndex, t_startanal);
+f_end_anal=findClosest(timeIndex,t_endanal);
+
 
 % Compute the average phase velocity prior to illumination
-f_start_anal=findClosest( timeIndex, t_startanal);
 v0=mean(phaseVelocity(f_start_anal:f_startIllum));
+devFromv0=phaseVelocity-v0;
+
 
 %%%%%%
 % Short Response Analysis
 %%%%%%
+% start times and frames of short analsyis
+f_short_start=f_startIllum;
+t_short_start=timeIndex(f_short_start);
 
-%Duration of the short analysis is from the start of illumination to t_analWin.short seconds
-%after the end of illumiantion
-d_short= ( timeIndex(f_endIllum) -timeIndex(f_startIllum) )  +t_analWin.short; %duration of short analysis
-expectDist_short=v0*d_short;
-f_end_short= findClosest(timeIndex, timeIndex(f_startIllum)+d_short); %frame that ends the short analysis
+%end times and frames of short analysis
+t_short_end= timeIndex(f_endIllum)+t_analWin.short;
+f_short_end=findClosest(timeIndex,t_short_end);
 
 
-%compute the actual distance by doing an integration... take the dot
-%product of the instantaneous phase velocity and the time
-%interval... think about it.. it works
-actualDist_short = ...
-    dot(phaseVelocity(f_startIllum:  f_end_short-1), timeIndex(f_startIllum:f_end_short-1)-timeIndex(f_startIllum+1:f_end_short) );
+%duration
+d_short=t_short_end-t_short_start;
 
-rshort=  ( expectDist_short - actualDist_short ) /d_short;
+%response (units of bodylength/sec/sec) accelleration.. makes sense
+r_short=sum(devFromv0(f_short_start:f_short_end))./d_short; 
+
+
 
 %%%%%%
 % Long Response Analysis
 %%%%%%
+%start times
+t_long_start=t_short_end;
+f_long_start=f_short_end;
+
+%end times
+f_long_end=f_end_anal;
+t_long_end=t_endanal;
+
+%duration
+d_long=t_long_end-t_long_start;
+
+%response
+r_long= sum(devFromv0(f_long_start:f_long_end))./d_long;
 
 
-d_long= t_analWin.long; %duartion of long analysis
-expectDist_long=v0*d_long;
-f_end_long= findClosest(timeIndex, timeIndex(f_startIllum)+d_short+d_long); %frame that ends the long analysis
-actualDist_long = ...
-    dot(phaseVelocity(f_end_short:  f_end_long-1), timeIndex(f_end_short:f_end_long-1)-timeIndex(f_end_short+1:f_end_long) );
-rlong=  ( expectDist_long - actualDist_long ) /d_long;
+
 
 
 if DEBUG
@@ -113,12 +129,12 @@ if DEBUG
     
     figure; 
     subplot(2,1,1);hold on; 
-    plot(phaseVelocity); title(['R_s=' num2str(rshort) ' R_l=' num2str(rlong)]);plot([f_startIllum, f_endIllum],[0,0],'ro'); 
-    plot([f_start_anal, f_end_long],[0,0],'k-');
+    plot(phaseVelocity); title(['R_s=' num2str(r_short) ' R_l=' num2str(r_long)]);plot([f_startIllum, f_endIllum],[0,0],'ro'); 
+    plot([f_start_anal, f_end_anal],[0,0],'k-');
     
     %plot markers showing end of short analysis and long analysis
-    plot([f_end_short, f_end_long],[v0,v0],'g^');
-    plot([f_start_anal, f_end_long],[v0,v0],'k-.');
+    plot([f_short_end, f_long_end],[v0,v0],'g^');
+    plot([f_start_anal, f_end_anal],[v0,v0],'k-.');
     subplot(2,1,2);hold on; 
-    plot(cumsum(phaseVelocity-v0));
+    plot(devFromv0);
 end
