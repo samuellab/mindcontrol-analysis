@@ -2,6 +2,9 @@ function [r_short r_long] = computeReversalResponse(phaseVelocity,timeIndex,f_st
 % This function computes the Reversal response of a worm after it was
 % illuminated.
 %
+% Here reversal respons is defined as average velocity above baseline
+% during window. 
+%
 % phaseVelocity frame-by-frame phase velocities in wormlengths / second
 % timeIndex is a vector containing timestamps corresponding to each frame
 % startIllum is the frame at which the illumination begins
@@ -14,13 +17,6 @@ function [r_short r_long] = computeReversalResponse(phaseVelocity,timeIndex,f_st
 %
 % Note: phaseVelocity should have N-1 elements, timeIndex has N elements
 %
-% The reversal response is computed according to a "distance-not-traveled
-% per second" model. The worm's average phase velocity is computed prior 
-% to the f_startIllum frame. Then the integrated distance the worm traveled
-% (computed from the phase velocity) is subtracted from the distance the
-% worm would have traveled at its initial velocity. 
-% 
-% This value is normalized by the amount of time elapsed.
 %
 % This metric captures the range of behaviours I am interested ni:
 % If the worm starts paused and then reverses, the response is negative.
