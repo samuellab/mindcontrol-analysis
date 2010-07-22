@@ -1523,6 +1523,7 @@ seg2 = handles.IllumSegCenter_data + handles.IllumSegRadius_data;
 T1 = str2num(get(handles.edit_T1, 'String'));
 T2 = str2num(get(handles.edit_T2, 'String'));
 T3 = str2num(get(handles.edit_T3, 'String'));
+T4= str2num(get(handles.edit_T4, 'String'));
 
 if T2 > T1
     plot([0 numcurvpts], [T2-T1 T2-T1], '--w');
@@ -1576,6 +1577,16 @@ colorbar;
 
 %perform velocity analysis
 handles.nu=velocityanalysis(handles);
+
+%perform reversal analysis
+try
+    time=handles.sElapsed_data+(10^-3)*handles.msRemElapsed_data;
+    computeReversalResponse(handles.nu,time,T2-T1,T3-T1,[])
+catch err
+    guidata(hObject, handles);  % update GUI data
+    rethrow(err)
+end
+
 guidata(hObject, handles);  % update GUI data
 
 
