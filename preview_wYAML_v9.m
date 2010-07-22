@@ -1632,6 +1632,8 @@ function pushbutton_export_Callback(hObject, eventdata, handles)
 % hObject    handle to pushbutton_export (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
 assignin('base', 'prefix', get(handles.edit_prefix, 'String'));
 assignin('base', 'yamlfile', get(handles.edit_yamlfile, 'String'));
 assignin('base', 'frameindex', handles.frameindex);
@@ -1678,8 +1680,15 @@ T3=str2num(get(handles.edit_T3, 'String'));
 T4=str2num(get(handles.edit_T4, 'String'));
 
 phaseVelocity=handles.nu;
+set(handles.status,'String','Saving....');
+pause(.1);
+guidata(hObject, handles);
 save([pathname filename]);
 save([pathname filename],'T1','T2','T3','T4','-append');
+msgbox('Saved!');
+set(handles.status,'String','OK');
+guidata(hObject, handles);
+
 
 
 %Draws a figure. Not neccessary for me (Andy)/

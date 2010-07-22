@@ -39,7 +39,11 @@ alpha_accum = 0.85;
 for j = 1:length(ps)
    %find the phase shift by doing a least squares fit
    tofitdata = lowpass1d(curvdata(j+1,:),sigma);
-   x = lsqcurvefit(shiftfn, x, curvaccumulated, tofitdata(:,cinds),-length(xs)*headCrop, length(xs)*tailCrop, op);
+try   x = lsqcurvefit(shiftfn, x, curvaccumulated, tofitdata(:,cinds),-length(xs)*headCrop, length(xs)*tailCrop, op);
+catch
+    disp('least squares curve fit failed!')
+    disp('Just fudging it and saying the velocity is the previous veloctiy.')
+end
    curvaccumulated = alpha_accum * interp1(xs,curvaccumulated,xs+x,'linear','extrap') + (1-alpha_accum) * tofitdata;
    ps(j) = x; %record the phase shift
    if (debug)

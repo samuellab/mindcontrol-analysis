@@ -133,9 +133,9 @@ if DEBUG
     plot([f_start_anal, f_end_anal],[v0,v0],'k-.');
     ylabel('phase velocity (bodylengths/second)')
     subplot(2,1,2);hold on; 
-    plot([f_start_anal:f_short_start],cumsum(devFromv0(f_start_anal:f_short_start-1)),'r');
-    plot([f_short_start:f_short_end],cumsum(devFromv0(f_short_start:f_short_end-1)),'g');
-    plot([f_long_start:f_long_end],cumsum(devFromv0(f_long_start:f_long_end-1)),'b');
-    ylabel('Integral of Deviation from Initial Velocity for Different Analysis Windows')
+    plot([f_start_anal:f_short_start-1],cumsum(devFromv0(f_start_anal:f_short_start-1)),'r');
+    plot([f_short_start:f_short_end-1],cumsum(devFromv0(f_short_start:f_short_end-1)),'g');
+    plot([f_long_start:f_long_end-1],cumsum(devFromv0(f_long_start:f_long_end-1)),'b');
+    ylabel('Distance Traveled In Each Window Beyond Baseline')
     xlabel('Frame')
 end
