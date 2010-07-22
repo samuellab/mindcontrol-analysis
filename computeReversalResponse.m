@@ -136,5 +136,7 @@ if DEBUG
     plot([f_short_end, f_long_end],[v0,v0],'g^');
     plot([f_start_anal, f_end_anal],[v0,v0],'k-.');
     subplot(2,1,2);hold on; 
-    plot(devFromv0);
+    plot([f_start_anal:f_short_start],cumsum(devFromv0(f_start_anal:f_short_start)),'r');
+    plot([f_short_start:f_short_end],cumsum(devFromv0(f_short_start:f_short_end)),'g');
+    plot([f_long_start:f_long_end],cumsum(devFromv0(f_long_start:f_long_end)),'b');
 end
