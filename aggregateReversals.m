@@ -14,5 +14,5 @@ for k=1:size(files,1)
 end
 
 
-figure;plot(t,short,'o');title('Short-Term Response'); xlabel('Time (s)');ylable('mean phase velocity above baseline')
+figure;plot(t,short,'o');title('Short-Term Response'); xlabel('Time (s)');ylabel('mean phase velocity above baseline')
 figure;plot(t,long,'o');title('Long-Term Response');xlabel('Time (s)');ylabel('mean phase velocity above baseline')
