@@ -83,6 +83,11 @@ if isempty(which('newid','-all'))
     disp('http://www.mathworks.com/support/solutions/en/data/1-39UWQT/index.html?product=ML&solution=1-39UWQT');
 end
 
+if isempty(which('lowpass1d','-all'))
+    errordlg('You are missing Marc Gershow`s "basic routines", or they have not been correctly added to the path. Please add them to the path.');
+    error('You are missing Marc Gershow`s "basic routines", or they have not been correctly added to the path. Please add them to the path.');
+end
+
 
 % UIWAIT makes preview_wYAML_v9 wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -342,7 +347,7 @@ val=double(get(f,'CurrentCharacter'));
             clear q;
             
             
-            %Find the frame nubmer corresponding to the timestamp before and after that we want
+            %Find the frame number corresponding to the timestamp before and after that we want
             t1=findClosest(handles.time,handles.time(t2)-seconds_pre);
             t4=findClosest(handles.time,handles.time(t3)+seconds_post);
             
@@ -1150,7 +1155,7 @@ idx = 1;
 linenumber = 0;
 handles.frameindex = [];  
 handles.dlpindex = [];
-handles.timeindex= [];
+
 numframes = str2num(get(handles.edit_numframes, 'String'));
 disp(['With ' num2str(numframes) '  frames']);
 % Each row of frameindex contains this info:
