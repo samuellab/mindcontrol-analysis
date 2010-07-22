@@ -129,14 +129,17 @@ if DEBUG
     
     figure; 
     subplot(2,1,1);hold on; 
-    plot(phaseVelocity); title(['R_s=' num2str(r_short) ' R_l=' num2str(r_long)]);plot([f_startIllum, f_endIllum],[0,0],'ro'); 
+    plot(phaseVelocity); title(['Illumination at' num2str(timeIndex(f_startIllum)) 'seconds, R_s=' num2str(r_short) ' R_l=' num2str(r_long)]);plot([f_startIllum, f_endIllum],[0,0],'ro'); 
     plot([f_start_anal, f_end_anal],[0,0],'k-');
     
     %plot markers showing end of short analysis and long analysis
     plot([f_short_end, f_long_end],[v0,v0],'g^');
     plot([f_start_anal, f_end_anal],[v0,v0],'k-.');
+    ylabel('phase velocity (bodylengths/second)')
     subplot(2,1,2);hold on; 
     plot([f_start_anal:f_short_start],cumsum(devFromv0(f_start_anal:f_short_start)),'r');
     plot([f_short_start:f_short_end],cumsum(devFromv0(f_short_start:f_short_end)),'g');
     plot([f_long_start:f_long_end],cumsum(devFromv0(f_long_start:f_long_end)),'b');
+    ylabel('Integral of Deviation from Initial Velocity for Different Analysis Windows')
+    xlabel('Frame')
 end
