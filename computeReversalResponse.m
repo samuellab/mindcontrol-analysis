@@ -1,4 +1,4 @@
-function [r_short r_long] = computeReversalResponse(phaseVelocity,timeIndex,f_startIllum,f_endIllum,t_analWin)
+function [r_short r_long] = computeReversalResponse(phaseVelocity,timeIndex,f_startIllum,f_endIllum,t_analWin,DEBUG)
 % This function computes the Reversal response of a worm after it was
 % illuminated.
 %
@@ -29,8 +29,9 @@ function [r_short r_long] = computeReversalResponse(phaseVelocity,timeIndex,f_st
 % by Andrew Leifer
 % 16 July 2010
 % leifer@fas.harvard.edu
-
-DEBUG=true;
+if isempty(DEBUG)
+    DEBUG=true;
+end
 
 if isempty(t_analWin)
     %applying default value for analysis windonw t_analWin

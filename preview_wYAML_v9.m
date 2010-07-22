@@ -1581,7 +1581,7 @@ handles.nu=velocityanalysis(handles);
 %perform reversal analysis
 try
     time=handles.sElapsed_data+(10^-3)*handles.msRemElapsed_data;
-    computeReversalResponse(handles.nu,time,T2-T1,T3-T1,[])
+    computeReversalResponse(handles.nu,time,T2-T1,T3-T1,[],1)
 catch err
     guidata(hObject, handles);  % update GUI data
     rethrow(err)
