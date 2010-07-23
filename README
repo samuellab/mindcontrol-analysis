@@ -1,1 +1,6 @@
-This is the collection of MATLAB analysis scripts to analyze data produced with Andy Leifer's MindControl software. Chris Fang-Yen wrote the initial data analysis suite. 
+This is the collection of MATLAB analysis scripts to analyze data produced 
+by Andrew Leifer's MindControl software. 
+
+Chris Fang-Yen wrote the initial data analysis suite.
+Andrew Leifer added features and wrote the phase velocity analysis, and 
+the reversal analysis. 
