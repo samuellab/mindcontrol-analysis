@@ -1165,8 +1165,21 @@ while ~flag
     line1 = fgetl(f);
     if ~isnumeric(line1)  % line1 = -1 at EOF
         linenumber = linenumber + 1;   
-        line1_scan=textscan(line1, '%s');
+        line1_scan=textscan(line1, '%q'); %changed to %q to encapsulate quotes --andy
         line1_scan = line1_scan{1};
+        
+        
+         
+       %Let's load the time at which the experiment was initiated.
+       %Note this is also the time with which sElapsed and msRemElapsed
+       %reference -- Andy
+       if strcmp(line1_scan{1},'ExperimentTime:')
+           handles.experimentTime=parseCVDateType(line1_scan{2});
+           disp(['Detected experiment time: ' line1_scan{2} ' \n']); 
+       end
+        
+        
+        
         if strcmp(line1_scan{1}, 'FrameNumber:')
             framenumber = str2num(line1_scan{2});
             handles.frameindex(idx,:) = [framenumber linenumber bytepos] ;
@@ -1195,7 +1208,7 @@ while ~flag
        if strcmp(line1_scan{1},'msRemElapsed:')
             msRem(idx-1) =str2num(line1_scan{2});
        end
-         
+       
            
     else
         flag = 1;  % END OF FILE
@@ -1401,6 +1414,7 @@ for j=1:YAMLline_end
         case 'ProtocolStep:' 
             tmp=textscan(handles.YAML_data{j+1}, '%d');
             handles.ProtocolStep_data(current_frame) = tmp{1};
+        case ' :'
     end
 end
 fprintf('\n');

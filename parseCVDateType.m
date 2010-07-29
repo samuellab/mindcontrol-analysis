@@ -50,5 +50,5 @@ switch match{2}
 end
 m=m;
 
-N=datenum(y,m,d,h,mi,sec)
+N=datenum(y,m,d,h,mi,sec);
 end
