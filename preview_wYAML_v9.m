@@ -1692,20 +1692,23 @@ T1=str2num(get(handles.edit_T1, 'String'));
 T2=str2num(get(handles.edit_T2, 'String'));
 T3=str2num(get(handles.edit_T3, 'String'));
 T4=str2num(get(handles.edit_T4, 'String'));
+expTimeStamp=handles.experimentTime;
 
 phaseVelocity=handles.nu;
 set(handles.status,'String','Saving....');
 pause(.1);
 guidata(hObject, handles);
 save([pathname filename]);
-save([pathname filename],'T1','T2','T3','T4','-append');
+save([pathname filename],'T1','T2','T3','T4','expTimeStamp','-append');
+
 msgbox('Saved!');
 set(handles.status,'String','OK');
 guidata(hObject, handles);
 
 
 
-%Draws a figure. Not neccessary for me (Andy)/
+%Draws a figure and saves it to disk. Not neccessary for what I want to do
+%right now. (Andy)
 %fnamefig = [pathname filename(1:end-4) '.tif'];
 %figure(2);
 %saveas(gcf,fnamefig, 'tif');
