@@ -1328,6 +1328,8 @@ disp(['Parsing yaml file over interval ' num2str(frame_start) '-' num2str(frame_
 h = waitbar(0,'Parsing yaml file');
 newframeline = [];
 current_frame = 0;
+
+%Actually extract data from the yaml file for the specified analysis region
 for j=1:YAMLline_end
     switch(handles.YAML_data{j})
         case 'FrameNumber:'
@@ -1694,12 +1696,17 @@ T3=str2num(get(handles.edit_T3, 'String'));
 T4=str2num(get(handles.edit_T4, 'String'));
 expTimeStamp=handles.experimentTime;
 
+
+%Pull out data about what protocol step we are t
+ProtocolIsOn=handles.ProtocolIsOn_data;
+ProtocolStep=handles.ProtocolStep_data;
+
 phaseVelocity=handles.nu;
 set(handles.status,'String','Saving....');
 pause(.1);
 guidata(hObject, handles);
 save([pathname filename]);
-save([pathname filename],'T1','T2','T3','T4','expTimeStamp','-append');
+save([pathname filename],'T1','T2','T3','T4','expTimeStamp','ProtocolIsOn','ProtocolStep','-append');
 
 msgbox('Saved!');
 set(handles.status,'String','OK');
