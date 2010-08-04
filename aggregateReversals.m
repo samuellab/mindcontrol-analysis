@@ -10,11 +10,13 @@ for k=1:size(files,1)
     
     disp(files(k,:));
     
-    %record the start of each recording in this series
-    N_recordingStartTime(k)=expTimeStamp;
+
     
     %Load the file
     load( [directory '\'  files(k,:)],'-mat')
+    
+    %record the start of each recording in this series
+    N_recordingStartTime(k)=expTimeStamp;
     
     %Calculate the time of stimulus in seconds since beginning of this
     %recording (in seconds)
@@ -22,7 +24,7 @@ for k=1:size(files,1)
     
     %calculate the actual time of this stimulation according to the
     %computers clock (in matlab's serialized datenum format)
-    N_realTime(k)=datenum( datevec(expTimeStamp)+[0 0 0 0 0 time(T2-T1)]);
+    N_realTime(k)=datenum( datevec(expTimeStamp)+[0 0 0 0 0 s_time(T2-T1)]);
     
     %Compute short and long reversal response
     [short(k) long(k)]=computeReversalResponse(phaseVelocity,s_time,T2-T1,T3-T1,[],0)
@@ -41,7 +43,7 @@ N_firstRecording=min(N_recordingStartTime);
 %Calculate the time t in secondes elapsed since the beginning of the first
 %recording for this experiment 
 for k=1:length(N_realTime)
-    t(k)= etime(datevec(N_realTime(k))-datevec(N_firstRecordingOfRun(k) ));
+    t(k)= etime(datevec(N_realTime(k)),datevec(N_firstRecording));
 end
 
 
