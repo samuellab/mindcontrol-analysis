@@ -1,4 +1,6 @@
 function [short long t]= aggregateReversals(directory)
+% [short long t]= aggregateReversals(directory) 
+%
 % Go through a directory containing .mat files that were exported during
 % reversal analysis and aggregate them to make a graph of the habituation
 % response.
@@ -53,6 +55,8 @@ end
 for k=1:length(frame_HUDS)
     frame_HUDS_str{k}=num2str(frame_HUDS(k));
 end
+
+save([directory '\aggregate_data.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','extremas_short','extremas_long','N_realTime','N_recordingStartTime');
 
 
 figure;
