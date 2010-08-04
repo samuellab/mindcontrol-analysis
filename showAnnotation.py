@@ -10,8 +10,8 @@ Display the annotations associated with an experiment whose filename contains ex
 """
 #Handle Command Line Arguments
 if ( len(sys.argv)<3 ) or ( len(sys.argv)>5 ):
-	print "Error wrong number of arguments!"
-	print usage
+	print("Error wrong number of arguments!")
+	print(usage)
 	exit()
 
 indexfile = sys.argv[1]
@@ -21,15 +21,15 @@ if len(sys.argv)>=4:
 	try:
 		framenum=int(sys.argv[3])
 	except:
-		print "ERROR: Expected frame number is not a valid integer!\n"
-		print usage
+		print("ERROR: Expected frame number is not a valid integer!\n")
+		print(usage)
 		exit()
-	print 'You want to find annotations after frame '+str(framenum)
+	print('You want to find annotations after frame '+str(framenum))
 
 try:
 	r=open(indexfile,'r')
 except:
-	print '\t ERROR: Annotation file not found!\n'
+	print('\t ERROR: Annotation file not found!\n')
 	exit()
 contents = r.read()
 #Location of the experiment of interest
@@ -39,7 +39,7 @@ experiment= contents[contents.rfind('---\nExperiment:\n',0,loc):contents.find('-
 #If the frame number was not specified
 if framenum==0:
 	#Display all of the annotations of the experiment
-	print experiment
+	print(experiment)
 	exit()
 
 #Let's parse the annotation with the largest frame number in the experiment
@@ -52,7 +52,7 @@ LargestFrame = int(  experiment[ largestFrameLoc+len(key):experiment.find('\n',l
 def LocNextAnnotation(text,frame,max):
 	"""Find the location of the next frame with an annotation whose frame number lies between frame and max in the string text"""
 	if frame > max:
-		print 'Error: the frame you are interested in is beyond the frame of the largest annotation in the experiment.'
+		print('Error: the frame you are interested in is beyond the frame of the largest annotation in the experiment.')
 		return None
 
 	for k in range(frame, max):
@@ -68,22 +68,22 @@ if len(sys.argv)==5:
 		NumFramesToDisplay=int(sys.argv[4])
 		last=LocNextAnnotation(experiment,framenum+NumFramesToDisplay,LargestFrame)
 	except: 
-		print 'ERROR: Expecting an integer value for the optional argument Number for which to display annotations'
+		print('ERROR: Expecting an integer value for the optional argument Number for which to display annotations')
 		last=len(experiment)
 
 
 
 if last==None:
-	print experiment[first:]
+	print(experiment[first:])
 	exit()
 if first==None:
-	print experiment
+	print(experiment)
 	exit()
-#print 'len(experiment=' +str(len(experiment))
-#print 'last = ' +str(last)
+#print('len(experiment=' +str(len(experiment)))
+#print('last = ' +str(last))
 if last>first: #if there is more than one annotation to view
-	print experiment[first:last]
+	print(experiment[first:last])
 else: #if there is only one annotation to view
 	#only display that one
-	print experiment[first:experiment.find('"\n',first)]
+	print(experiment[first:experiment.find('"\n',first)])
 
