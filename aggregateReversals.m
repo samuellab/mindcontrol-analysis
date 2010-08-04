@@ -1,18 +1,63 @@
 function [short long t]= aggregateReversals(directory)
+% Go through a directory containing .mat files that were exported during
+% reversal analysis and aggregate them to make a graph of the habituation
+% response.
 
 files=ls([directory '\*.mat']);
 
 for k=1:size(files,1)
     
-    disp(files(k,:));
-    load( [directory '\'  files(k,:)],'-mat')
-    time=handles.sElapsed_data+(10^-3)*handles.msRemElapsed_data;
-    [short(k) long(k)]=computeReversalResponse(phaseVelocity,time,T2-T1,T3-T1,[],0)
-    t(k)=time(T2-T1);
-	clear('handles','phaseVelocity','time','T1','T2','T3','T4');
     
+    disp(files(k,:));
+    
+    %record the start of each recording in this series
+    N_recordingStartTime(k)=expTimeStamp;
+    
+    %Load the file
+    load( [directory '\'  files(k,:)],'-mat')
+    
+    %Calculate the time of stimulus in seconds since beginning of this
+    %recording (in seconds)
+    s_time=handles.sElapsed_data+(10^-3)*handles.msRemElapsed_data;
+    
+    %calculate the actual time of this stimulation according to the
+    %computers clock (in matlab's serialized datenum format)
+    N_realTime(k)=datenum( datevec(expTimeStamp)+[0 0 0 0 0 time(T2-T1)]);
+    
+    %Compute short and long reversal response
+    [short(k) long(k)]=computeReversalResponse(phaseVelocity,s_time,T2-T1,T3-T1,[],0)
+    
+   
+    %Save the HUDS frame number of the start of illumination
+    frame_HUDS(k)=handles.CamFrameNumber(T2-T1);
+    
+    
+	clear('handles','phaseVelocity','time','T1','T2','T3','T4','expTimeStamp');
+end
+
+%There are often more then one contiguous recordings per experiment.
+N_firstRecording=min(N_recordingStartTime);
+
+%Calculate the time t in secondes elapsed since the beginning of the first
+%recording for this experiment 
+for k=1:length(N_realTime)
+    t(k)= etime(datevec(N_realTime(k))-datevec(N_firstRecordingOfRun(k) ));
 end
 
 
-figure;plot(t,short,'o');title('Short-Term Response'); xlabel('Time (s)');ylabel('mean phase velocity above baseline')
-figure;plot(t,long,'o');title('Long-Term Response');xlabel('Time (s)');ylabel('mean phase velocity above baseline')
+%convert frame_HUDS into a cell area of strings for graphing purposes
+for k=1:length(frame_HUDS)
+    frame_HUDS_str{k}=num2str(frame_HUDS(k));
+end
+
+
+figure;
+plot(t,short,'o');
+title('Short-Term Response'); xlabel('Time (s)');ylabel('mean phase velocity above baseline')
+text(t,ones(1,length(t)).*(min(short)-1), frame_HUDS_str);
+
+
+figure;
+plot(t,long,'o');
+title('Long-Term Response');xlabel('Time (s)');ylabel('mean phase velocity above baseline')
+text(t,ones(1,length(t)).*(min(short)-1), frame_HUDS_str);
