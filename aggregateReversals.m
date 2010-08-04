@@ -55,9 +55,10 @@ end
 for k=1:length(frame_HUDS)
     frame_HUDS_str{k}=num2str(frame_HUDS(k));
 end
-
+try
 save([directory '\aggregate_data.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','extremas_short','extremas_long','N_realTime','N_recordingStartTime');
-
+catch
+end
 
 figure;
 subplot(2,1,1);
