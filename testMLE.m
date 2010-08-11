@@ -6,9 +6,9 @@ t=0:100; % time series
 a=.1;
 b=.9;
 c=10;
-w=a+b.*exp(-t./c);
+w=a+b*exp(-t/c);
 
-figure;
+figure(1);
 plot(t,w);
 title('Likelihood of an event over time');
 
@@ -22,7 +22,7 @@ q( find(rand(size(w))<w) )=1;
 
 %%%%%%%%% FIREWALL.. treat t & q as real measurements
 
-figure;
+figure(2);
 plot(t,q,'o');
 title('Events');
 %now use q, and t to do a Maximum Likelihood Estimate
@@ -31,4 +31,13 @@ title('Events');
 %There will be zero likelihood of getting no response at the first stimuli
 %I will need to start my time series some standard time away.
 
+x0=[.1 , .9 , 10]% +rand(1,3).*[.1, .9, 10]; %initial conditions
+f=@(x)sum(logExpPartial(x(1),x(2),x(3),t,q),2);
+
+options=optimset('Display','iter');
+[x,fval]=fsolve(f,x0,options)
+
+figure(1)
+hold on;
+plot(t,x(1)+x(2).*exp(-t./x(3)),'r');
 
