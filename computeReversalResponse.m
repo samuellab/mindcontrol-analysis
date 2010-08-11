@@ -58,8 +58,10 @@ end
    
 if  ( floor( t_analWin.beforeIllum+t_analWin.short+t_analWin.long+ ...
         ( timeIndex(f_endIllum) - timeIndex(f_startIllum) )  ) > timeIndex(end)-timeIndex(1) )
-    error('Data provided is shorter than the analysis window time and specified illumination time.');
-    error('In other words yoru timing does not add up.');
+    disp('Data provided is shorter than the analysis window time and specified illumination time. \nIn other words yoru timing does not add up.');
+    disp('continuing onward anyway with a much shorter long-analysis window time of 1 seconds');
+    t_analWin.long=1;
+    
 end
 
 %time that analysis begins
