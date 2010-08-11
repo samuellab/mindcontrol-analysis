@@ -46,9 +46,7 @@ for k=1:size(files,1)
     %Compute short and long reversal response
     [short(k) long(k)]=computeReversalResponse(phaseVelocity,s_time,T2-T1,T3-T1,[],0);
     
-    %Compute naive lazy reversals
-    [extremas_short(k,:), extremas_long(k,:)] = computeLazyReversalResponse(phaseVelocity,s_time,T2-T1,T3-T1,[],0);
-   
+
     %Save the HUDS frame number of the start of illumination
     frame_HUDS(k)=handles.CamFrameNumber(T2-T1);
     
@@ -71,19 +69,17 @@ for k=1:length(frame_HUDS)
     frame_HUDS_str{k}=num2str(frame_HUDS(k));
 end
 try
-save([directory '_aggregate.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','extremas_short','extremas_long','N_realTime','N_recordingStartTime');
+save([directory '_aggregate.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','N_realTime','N_recordingStartTime');
 catch err1
 end
 
 figure;
-subplot(2,1,1);
+
 hold on;
 plot(t,short,'o');
 plot(t,zeros(length(t),1),'-.');
 title('Short-Term Response'); xlabel('Time (s)');ylabel('mean phase velocity above baseline')
 text(t,ones(1,length(t)).*(min(short)-1), frame_HUDS_str);
-subplot(2,1,2);
-plot(t,extremas_short(:,1),'^');
 
 
 figure;
