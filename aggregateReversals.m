@@ -2,10 +2,19 @@ function [short long t]= aggregateReversals(directory)
 % [short long t]= aggregateReversals(directory) 
 %
 % Go through a directory containing .mat files that were exported during
-% reversal analysis and aggregate them to make a graph of the habituation
-% response.
-
+% reversal analysis from the preview_w_YAML file and aggregate 
+% them into one data set that has reversal magnitude and time of stimulus
+% 
+% Then output the aggregated data in a mat file in the parent directory.
+%
+% This script is designed to analyze the data of a single run.. e.g. a
+% contiguous set of recordings on one worm. 
+%
+% Other scripts like aggregateWorms.m are designed to aggregate runs from
+% many different worms that all underwent the same experiment.
+% 
 files=ls([directory '\*.mat']);
+
 
 for k=1:size(files,1)
     
@@ -17,6 +26,12 @@ for k=1:size(files,1)
     %Load the file
     load( [directory '\'  files(k,:)],'-mat')
     
+    %Check to make sure we are dealing with a mat file that was generated
+    %from the mindcontrol preview program
+    if ( ~exist('expTimeStamp') || ~exist('handles')|| ~exist('phaseVelocity')|| ~exist('T1') )
+        disp([directory '\'  files(k,:) '  does not seem to be a valid preview_wYAML_v9 export file!']  )
+        continue
+    end
     %record the start of each recording in this series
     N_recordingStartTime(k)=expTimeStamp;
     
@@ -56,8 +71,8 @@ for k=1:length(frame_HUDS)
     frame_HUDS_str{k}=num2str(frame_HUDS(k));
 end
 try
-save([directory '\aggregate_data.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','extremas_short','extremas_long','N_realTime','N_recordingStartTime');
-catch
+save([directory '_aggregate.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','extremas_short','extremas_long','N_realTime','N_recordingStartTime');
+catch err1
 end
 
 figure;
@@ -75,3 +90,8 @@ figure;
 plot(t,long,'o');
 title('Long-Term Response');xlabel('Time (s)');ylabel('mean phase velocity above baseline')
 text(t,ones(1,length(t)).*(min(short)-1), frame_HUDS_str);
+if exist('err1') 
+    rethrow(err1)
+else
+    disp('Goodbye.');
+end
