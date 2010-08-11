@@ -4,10 +4,9 @@ t=0:100; % time series
 
 %Paramters of our exponential
 a=.1;
-b=.9;
-c=10;
-w=a+b*exp(-t/c);
-
+b=.8;
+c=.1;
+w=a+(b-a)*exp(-c*t);
 figure(1);
 plot(t,w);
 title('Likelihood of an event over time');
@@ -31,13 +30,16 @@ title('Events');
 %There will be zero likelihood of getting no response at the first stimuli
 %I will need to start my time series some standard time away.
 
-x0=[.1 , .9 , 10]% +rand(1,3).*[.1, .9, 10]; %initial conditions
+x0=[a , b , c]+ (.5)*(1-rand(1,3)).*[a, b, c] ; %initial conditions
+lbound=[0,0,0];
+ubound=[1,1,.5];
 f=@(x)sum(logExpPartial(x(1),x(2),x(3),t,q),2);
 
-options=optimset('Display','iter');
-[x,fval]=fsolve(f,x0,options)
+
+[x,fval]=lsqnonlin(f,x0,lbound,ubound)
+%[x,fval]=fsolve(f,x0,options)
 
 figure(1)
 hold on;
-plot(t,x(1)+x(2).*exp(-t./x(3)),'r');
+plot(t,x(1)+(x(2)-x(1))*exp(-x(3)*t),'r');
 

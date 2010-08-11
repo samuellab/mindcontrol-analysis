@@ -12,11 +12,14 @@ function partial=logExpPartial(a,b,c,t,r)
 % P(r,w)=1+w(2r-1)-r 
 %
 % Where,
-% w = a + b * exp(-t/c) 
+% w = a + (b-a) * exp(-c*t) 
 % 
+% (Note the funky choice of parameters is so that a and b can be set to be
+% in the range of 0 to 1. You can think of alpha=a; beta=(b-a); tau=1/c;)
+%
 % Thus
 %
-% P(r,a,b,c,d,t) = 1- r + 2(r-1) * ( a+b*exp(-t/c) ) 
+% P(r,a,b,c,d,t) = 1- r + 2(r-1) * ( a + (b-a) * exp(-c*t)) 
 % 
 % Here we take the natural log of this expression
 % and the partial derivative with respect to parameters a, b & c
@@ -26,6 +29,6 @@ function partial=logExpPartial(a,b,c,t,r)
 % Inspired by discussions with Benjamin Schwartz and Subhy Lahiri
 %
 
-partial =  [(2*r-1 ) ./  ( 1-r+(2*r-1).*(a+b *exp(-t/c)) );...
-            (2*r-1 ).*exp(-t/c)  ./  ( 1-r+(2*r-1).*(a+b *exp(-t/c)) );...
-            b*(2*r-1 ).*exp(-t/c).*(t/(c^2)) ./  ( 1-r+(2*r-1).*(a+b *exp(-t/c)) ); ];
+partial =  [(2*r-1 ) .*(1-exp(-c*t)) ./ ( 1-r+(2*r-1).*(a+(b-a)*exp(-c*t)) ) ;...
+            (2*r-1 ).*b.*exp(-c*t)  ./  ( 1-r+(2*r-1).*(a+(b-a)*exp(-c*t)) );...
+            (2*r-1 ).*(b-a).*(-t) .* exp(-c*t)  ./  ( 1-r+(2*r-1).*(a+(b-a)*exp(-c*t)) ); ];
