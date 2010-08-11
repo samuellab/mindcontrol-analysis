@@ -5,6 +5,8 @@ function [extremas_short, extremas_long] = computeLazyReversalResponse(phaseVelo
 % This function just returns the max and min in different time intervals of
 % the difference between phasevelocity and baseline phasevelocity.
 %
+% It doesn't seem to be a very good metric.
+%
 % phaseVelocity frame-by-frame phase velocities in wormlengths / second
 % timeIndex is a vector containing timestamps corresponding to each frame
 % startIllum is the frame at which the illumination begins

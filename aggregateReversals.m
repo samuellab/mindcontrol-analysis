@@ -57,7 +57,7 @@ for k=1:length(frame_HUDS)
 end
 try
 save([directory '\aggregate_data.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','extremas_short','extremas_long','N_realTime','N_recordingStartTime');
-catch
+catch err1
 end
 
 figure;
@@ -75,3 +75,8 @@ figure;
 plot(t,long,'o');
 title('Long-Term Response');xlabel('Time (s)');ylabel('mean phase velocity above baseline')
 text(t,ones(1,length(t)).*(min(short)-1), frame_HUDS_str);
+if exist('err1') 
+    rethrow(err1)
+else
+    disp('Goodbye.');
+end
