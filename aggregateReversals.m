@@ -15,9 +15,15 @@ function [short long t]= aggregateReversals(directory)
 % 
 files=ls([directory '\*.mat']);
 
+h = waitbar(0,'Aggregating reversals...');
+steps = size(files,1);
 
-for k=1:size(files,1)
+
+
+for k=1:steps
     
+    waitbar(k/ steps)
+
     
     disp(files(k,:));
     
@@ -53,6 +59,8 @@ for k=1:size(files,1)
     
 	clear('handles','phaseVelocity','time','T1','T2','T3','T4','expTimeStamp');
 end
+
+close(h)
 
 %There are often more then one contiguous recordings per experiment.
 N_firstRecording=min(N_recordingStartTime);
