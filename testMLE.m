@@ -27,7 +27,7 @@ title('Events');
 %now use q, and t to do a Maximum Likelihood Estimate
 
 
-x0=[a , b , c];  %initial conditions
+x0=[(a+.03) , (b-.1) , (c+.4)];  %initial conditions
 lbound=[0,0,0];
 ubound=[1,1,10];
 f=@(x) sum(-logLikelihood(x(1),x(2),x(3),t,q),2);
@@ -36,12 +36,8 @@ f=@(x) sum(-logLikelihood(x(1),x(2),x(3),t,q),2);
 coef=[1 1 0];
 limit=1;
 
-%x = fmincon(f,x0,coef,limit)
-
 x = fmincon(f,x0,coef,limit,[],[],lbound,ubound)
 
-%[x,fval]=lsqnonlin(f,x0,lbound,ubound)
-%[x,fval]=fsolve(f,x0,options)
 
 figure(1)
 hold on;
