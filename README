@@ -1,6 +1,8 @@
 This is the collection of MATLAB analysis scripts to analyze data produced 
 by Andrew Leifer's MindControl software. 
 
-Chris Fang-Yen wrote the initial data analysis suite.
-Andrew Leifer added features and including the reversal analysis. 
-Marc Gershow wrote the phase-velocity extractor. 
+Chris Fang-Yen wrote the initial data previewing suite.
+Andrew Leifer added features including the reversal analysis. 
+Marc Gershow wrote the phase-velocity extractor.
+Ben Schwartz helped design the Maximum Likelihood Estimator 
+
