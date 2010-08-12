@@ -13,6 +13,7 @@ function [short long t]= aggregateReversals(directory)
 % Other scripts like aggregateWorms.m are designed to aggregate runs from
 % many different worms that all underwent the same experiment.
 % 
+disp('Welcome.');
 files=ls([directory '\*.mat']);
 
 h = waitbar(0,'Aggregating reversals...');
@@ -25,13 +26,13 @@ for k=1:steps
     waitbar(k/ steps)
 
     
-    disp(files(k,:));
+    disp(['Loading ' files(k,:) ' ...' ]);
     
 
     
     %Load the file
     load( [directory '\'  files(k,:)],'-mat')
-    
+    disp('loaded!');
     %Check to make sure we are dealing with a mat file that was generated
     %from the mindcontrol preview program
     if ( ~exist('expTimeStamp') || ~exist('handles')|| ~exist('phaseVelocity')|| ~exist('T1') )
@@ -77,8 +78,10 @@ for k=1:length(frame_HUDS)
     frame_HUDS_str{k}=num2str(frame_HUDS(k));
 end
 try
+disp(['Writing to ' directory '_aggregate.mat']);
 save([directory '_aggregate.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','N_realTime','N_recordingStartTime');
 catch err1
+    disp('Error! could not write out!');
 end
 
 figure;
