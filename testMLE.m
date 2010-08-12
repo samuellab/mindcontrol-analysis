@@ -26,9 +26,6 @@ plot(t,q,'o');
 title('Events');
 %now use q, and t to do a Maximum Likelihood Estimate
 
-%NOTE.. ANDY.. don't start my time series at zero, because otherwise
-%There will be zero likelihood of getting no response at the first stimuli
-%I will need to start my time series some standard time away.
 
 x0=[a , b , c]+ (.5)*(1-rand(1,3)).*[a, b, c] ; %initial conditions
 lbound=[0,0,0];
