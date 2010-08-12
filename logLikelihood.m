@@ -12,21 +12,18 @@ function ll=logLikelihood(a,b,c,t,r)
 % P(r,w)=1+w(2r-1)-r 
 %
 % Where,
-% w = a + (b-a) * exp(-c*t) 
-% 
-% (Note the funky choice of parameters is so that a and b can be set to be
-% in the range of 0 to 1. You can think of alpha=a; beta=(b-a); tau=1/c;)
-%
+% w = a + b* exp(-c*t) 
+
 % Thus
 %
-% P(r,a,b,c,d,t) = 1- r + 2(r-1) * ( a + (b-a) * exp(-c*t)) 
+% P(r,a,b,c,d,t) = 1- r + 2(r-1) * ( a + b * exp(-c*t)) 
 % 
 % Here we take the natural log of this expression
-% and the partial derivative with respect to parameters a, b & c
+% 
 %
 % by Andrew Leifer
 % leifer@fas.harvard.edu
 % Inspired by discussions with Benjamin Schwartz and Subhy Lahiri
 %
 
-ll =  log ( 1-r+(2*r-1).*(a+(b-a)*exp(-c*t)) );
+ll =  log ( 1-r+(2*r-1).*(a+b*exp(-c*t)) );

@@ -27,16 +27,23 @@ title('Events');
 %now use q, and t to do a Maximum Likelihood Estimate
 
 
-x0=[a , b , c]+ (.5)*(1-rand(1,3)).*[a, b, c] ; %initial conditions
+x0=[a , b , c];  %initial conditions
 lbound=[0,0,0];
-ubound=[1,1,.5];
-f=@(x)sum(logExpPartial(x(1),x(2),x(3),t,q),2);
+ubound=[1,1,10];
+f=@(x) sum(-logLikelihood(x(1),x(2),x(3),t,q),2);
 
+%Add in constraint that a+b<1
+coef=[1 1 0];
+limit=1;
 
-[x,fval]=lsqnonlin(f,x0,lbound,ubound)
+%x = fmincon(f,x0,coef,limit)
+
+x = fmincon(f,x0,coef,limit,[],[],lbound,ubound)
+
+%[x,fval]=lsqnonlin(f,x0,lbound,ubound)
 %[x,fval]=fsolve(f,x0,options)
 
 figure(1)
 hold on;
-plot(t,x(1)+(x(2)-x(1))*exp(-x(3)*t),'r');
+plot(t,x(1)+x(2)*exp(-x(3)*t),'r');
 
