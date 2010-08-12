@@ -309,7 +309,7 @@ val=double(get(f,'CurrentCharacter'));
         case 50  % 2
             set(handles.edit_T4, 'String', num2str(current_frame));
         case 103 %g
-            hframe=str2num(char(inputdlg('Go to HUDS frame number:','Jump to HUDS frame number')));
+            hframe=str2num(char(newid('Go to HUDS frame number:','Jump to HUDS frame number')));
             mframe=find(handles.frameindex(:,1)==hframe);
             if ~isempty(mframe)
                 current_frame=mframe;
@@ -331,8 +331,8 @@ val=double(get(f,'CurrentCharacter'));
             clear q;
         case 109% m for magic
             %Ask the user for input in terms of seconds.
-            seconds_pre=str2num(char(inputdlg('Enter number of seconds BEFORE dlp event:','Magically assign a temporal region of interest')));
-            seconds_post=str2num(char(inputdlg('Enter number of seconds AFTER dlp event:','Magically assign a temporal region of interest')));
+            seconds_pre=str2num(char(newid('Enter number of seconds BEFORE dlp event:','Magically assign a temporal region of interest')));
+            seconds_post=str2num(char(newid('Enter number of seconds AFTER dlp event:','Magically assign a temporal region of interest')));
 
             
             %find the nearest off->on event
