@@ -55,8 +55,11 @@ for k=1:steps
     
 
     %Save the HUDS frame number of the start of illumination
+    try
     frame_HUDS(k)=handles.CamFrameNumber(T2-T1);
-    
+    catch err2
+        disp('Error! CamFrameNumber(T2-T1)')
+    end
     
 	clear('handles','phaseVelocity','time','T1','T2','T3','T4','expTimeStamp');
 end
@@ -75,6 +78,11 @@ end
 
 %convert frame_HUDS into a cell area of strings for graphing purposes
 for k=1:length(frame_HUDS)
+%     if ischar(frame_HUDS(k))
+%         str=num2str(frame_HUDS(k));
+%     else
+%         str='Error';
+%     end
     frame_HUDS_str{k}=num2str(frame_HUDS(k));
 end
 try

@@ -27,6 +27,11 @@ title('Reversal Magnitude');
 
 figure(2);
 title('Binary Response');
+
+T=[]; %time;
+Q=[]; %response magnitue
+R=[]; %binary response
+
 for k=1:steps
     
     waitbar(k/ steps)
@@ -45,24 +50,61 @@ for k=1:steps
         continue
     end
    
-    
-    %plot the reversal magnitude
-    figure(1);
-    hold on;
-    plot(t,short,'*','MarkerEdgeColor',[rand, rand, rand]);
-    
-    
     %calculate binary response
     r=zeros(size(short));
     r(find(short<thresh))=1;
     
+    %Concatenate this data to the existing data;
+    T=[T t]; %time
+    Q=[Q short]; %reversal magnitude
+    R=[R r]; %binary response
+    
+    
+    %plot the reversal magnitude
+    figure(1);
+    hold on;
+    plot(t,short,'o','MarkerEdgeColor',[rand, rand, rand],'LineWidth',2);
+        
+
+    
     %plot binary response
     figure(2)
     hold on;
-    plot(t,r,'*','MarkerEdgeColor',[rand, rand, rand]);
+    plot(t,r,'o','MarkerEdgeColor',[rand, rand, rand],'LineWidth',2);
     
-    clear('t','short');
+    clear('t','short','r');
 end
+
+
+
+
+
+
+%Beginning curve fitting
+disp('beginning curve fitting');
+
+a=.1;
+b=.7;
+c=.001;
+
+x0=[a b c];  %initial conditions
+lbound=[0,0,0];
+ubound=[1,1,10];
+f=@(x) sum(-logLikelihood(x(1),x(2),x(3),T,R),2);
+
+%Add in constraint that a+b<1
+coef=[1 1 0];
+limit=1;
+
+x = fmincon(f,x0,coef,limit,[],[],lbound,ubound)
+
+
+figure(2)
+hold on;
+plot(T,x(1)+x(2)*exp(-x(3)*T),'or');
+
+
+
 
 close(h)
     disp('Goodbye.');
