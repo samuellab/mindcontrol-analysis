@@ -16,7 +16,7 @@ function [short long t]= aggregateReversals(directory)
 disp('Welcome.');
 files=ls([directory '\*.mat']);
 
-h = waitbar(0,'Aggregating reversals...');
+wait = waitbar(0,'Aggregating reversals...');
 steps = size(files,1);
 
 
@@ -64,7 +64,6 @@ for k=1:steps
 	clear('handles','phaseVelocity','time','T1','T2','T3','T4','expTimeStamp');
 end
 
-close(h)
 
 %There are often more then one contiguous recordings per experiment.
 N_firstRecording=min(N_recordingStartTime);
@@ -105,6 +104,13 @@ figure;
 plot(t,long,'o');
 title('Long-Term Response');xlabel('Time (s)');ylabel('mean phase velocity above baseline')
 text(t,ones(1,length(t)).*(min(short)-1), frame_HUDS_str);
+
+if exist(wait)
+    close(wait)
+end
+
+
+
 if exist('err1') 
     rethrow(err1)
 else
