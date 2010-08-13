@@ -332,13 +332,18 @@ val=double(get(f,'CurrentCharacter'));
         case 109% m for magic
             %Ask the user for input in terms of seconds.
             seconds_pre=str2num(char(newid('Enter number of seconds BEFORE dlp event:','Magically analyze and export a DLP on event')));
-            seconds_post=str2num(char(newid('Enter number of seconds AFTER dlp event:','Magically analyze and export a DLP on event')));
-            
-            if isempty(seconds_pre) || isempty(seconds_post)
+            if isempty(seconds_pre)
                 %User canceled the magic
                 disp('User canceled the magic.');
-                return
+                return   
+            end
             
+            seconds_post=str2num(char(newid('Enter number of seconds AFTER dlp event:','Magically analyze and export a DLP on event')));
+            
+            if  isempty(seconds_post)
+                %User canceled the magic
+                disp('User canceled the magic.');
+                return   
             end
             
             %find the nearest off->on event
@@ -362,14 +367,6 @@ val=double(get(f,'CurrentCharacter'));
              set(handles.edit_T2, 'String', num2str(t2));
              set(handles.edit_T3, 'String', num2str(t3));
              set(handles.edit_T4, 'String', num2str(t4));
-             
-             %Play
-             pushbutton_play_Callback(hObject, eventdata, handles);             
-             %Analyze
-             pushbutton_analyzeT1T4_Callback(hObject, eventdata, handles);
-             
-             %Export Automatically
-             pushbutton_export_Callback(hObject,eventdata,handles);
         otherwise
     end
     if isempty(current_frame)
@@ -403,6 +400,7 @@ val=double(get(f,'CurrentCharacter'));
         set(handles.edit_currentframe, 'String', num2str(current_frame));
         set(handles.status, 'String', 'Out of range or file error');
     end
+
 
         
 function edit_T1_Callback(hObject, eventdata, handles)
