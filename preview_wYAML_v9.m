@@ -1670,7 +1670,7 @@ tmp=[get(handles.edit_prefix, 'String') '_' ...
 [filename pathname ] = uiputfile('*.mat', tmp, tmp);
 
 
-if (filename==0 || pathname==0)
+if (~ischar(filename)|| ~ischar(pathname))
     disp('User cancelled the save. Not saved.');
     return
 end
@@ -1724,11 +1724,17 @@ ProtocolStep=handles.ProtocolStep_data;
 
 phaseVelocity=handles.nu;
 set(handles.status,'String','Saving....');
+h=waitbar(0,'Saving...');
+waitsteps=4;
+waitbar(1/waitsteps,h);
 pause(.1);
+waitbar(2/waitsteps,h);
 guidata(hObject, handles);
 save([pathname filename]);
+waitbar(3/waitsteps,h);
 save([pathname filename],'T1','T2','T3','T4','expTimeStamp','ProtocolIsOn','ProtocolStep','-append');
-
+waitbar(4/waitsteps,h);
+close(h)
 msgbox('Saved!');
 set(handles.status,'String','OK');
 guidata(hObject, handles);
