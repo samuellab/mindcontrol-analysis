@@ -16,11 +16,17 @@ function [short long t]= aggregateReversals(directory)
 disp('Welcome.');
 files=ls([directory '\*.mat']);
 
-wait = waitbar(0,'Aggregating reversals...');
+
 steps = size(files,1);
 
-
-
+if steps==0
+    disp('No files found!')
+    short=[]
+    long=[]
+    t=[]
+    return
+end
+wait = waitbar(0,'Aggregating reversals...');
 for k=1:steps
     
     waitbar(k/ steps)
