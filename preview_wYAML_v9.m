@@ -331,9 +331,17 @@ val=double(get(f,'CurrentCharacter'));
             clear q;
         case 109% m for magic
             %Ask the user for input in terms of seconds.
-            seconds_pre=str2num(char(newid('Enter number of seconds BEFORE dlp event:','Magically assign a temporal region of interest')));
-            seconds_post=str2num(char(newid('Enter number of seconds AFTER dlp event:','Magically assign a temporal region of interest')));
-
+            seconds_pre=str2num(char(newid('Enter number of seconds BEFORE dlp event:','Magically analyze and export a DLP on event')));
+            seconds_post=str2num(char(newid('Enter number of seconds AFTER dlp event:','Magically analyze and export a DLP on event')));
+            
+            if isempty(seconds_pre) || isempty(seconds_post)
+                %User canceled the magic
+                disp('User canceled the magic.');
+                return
+            
+            end
+            warndlg('About to close all graph windows.')
+            close all;
             
             %find the nearest off->on event
             q=find(handles.dlpindex(:,3)==1);
@@ -356,6 +364,14 @@ val=double(get(f,'CurrentCharacter'));
              set(handles.edit_T2, 'String', num2str(t2));
              set(handles.edit_T3, 'String', num2str(t3));
              set(handles.edit_T4, 'String', num2str(t4));
+             
+             %Play
+             pushbutton_play_Callback(hObject, eventdata, handles);             
+             %Analyze
+             pushbutton_analyzeT1T4_Callback(hObject, eventdata, handles);
+             
+             %Export Automatically
+             pushbutton_export_Callback(hObject,eventdata,handles);
         otherwise
     end
     if isempty(current_frame)
@@ -1649,6 +1665,17 @@ function pushbutton_export_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+%create a filenume that uses the HUDS frame number
+tmp=[get(handles.edit_prefix, 'String') '_' ...
+    num2str(handles.frameindex(str2num( get(handles.edit_T1, 'String') ),1))...
+    '-' num2str(handles.frameindex(str2num( get(handles.edit_T4, 'String') ),1)) '.mat'];
+[filename pathname ] = uiputfile('*.mat', tmp, tmp);
+
+
+if (filename==0 || pathname==0)
+    disp('User cancelled the save. Not saved.');
+    return
+end
 
 assignin('base', 'prefix', get(handles.edit_prefix, 'String'));
 assignin('base', 'yamlfile', get(handles.edit_yamlfile, 'String'));
@@ -1683,11 +1710,7 @@ assignin('base', 'curvdatafiltered', handles.curvdatafiltered);
 assignin('base', 'curvdatafiltered_t', handles.curvdatafiltered_t);
 assignin('base', 'nu', handles.nu);
 
-%create a filenume that uses the HUDS frame number
-tmp=[get(handles.edit_prefix, 'String') '_' ...
-    num2str(handles.frameindex(str2num( get(handles.edit_T1, 'String') ),1))...
-    '-' num2str(handles.frameindex(str2num( get(handles.edit_T4, 'String') ),1)) '.mat'];
-[filename pathname ] = uiputfile('*.mat', tmp, tmp);
+
 
 
 T1=str2num(get(handles.edit_T1, 'String'));
