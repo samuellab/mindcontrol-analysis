@@ -340,8 +340,6 @@ val=double(get(f,'CurrentCharacter'));
                 return
             
             end
-            warndlg('About to close all graph windows.')
-            close all;
             
             %find the nearest off->on event
             q=find(handles.dlpindex(:,3)==1);
