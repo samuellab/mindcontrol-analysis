@@ -105,7 +105,7 @@ plot(t,long,'o');
 title('Long-Term Response');xlabel('Time (s)');ylabel('mean phase velocity above baseline')
 text(t,ones(1,length(t)).*(min(short)-1), frame_HUDS_str);
 
-if exist(wait)
+if exist('wait')
     close(wait)
 end
 
