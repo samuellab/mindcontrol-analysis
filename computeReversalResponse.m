@@ -36,7 +36,7 @@ end
 if isempty(t_analWin)
     %applying default value for analysis windonw t_analWin
     t_analWin.beforeIllum=2; %2 seconds prior to a illum
-    t_analWin.short=1.5; %1.5 seconds post illumination (so 3.5 seconds total)
+    t_analWin.short=1.5; %1.5 seconds post illumination (so 3 seconds total when considering 1.5 second illum window)
     t_analWin.long=5.5; %6.5 secondps after the short window
 end
 

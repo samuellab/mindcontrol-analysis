@@ -1,5 +1,5 @@
-function fitMLEtoExperiment(directory,thresh)
-% fitMLEtoExperiment(directory)
+function x=fitMLEtoExperiment(directory,thresh)
+% x=fitMLEtoExperiment(directory)
 %
 % Go through a directory containing .mat files that were exported with
 % aggregateReversals. There should be one .mat file for each "run" 

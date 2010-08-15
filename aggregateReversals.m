@@ -39,8 +39,13 @@ for k=1:steps
     %Load the file
     load( [directory '\'  files(k,:)],'-mat')
     disp('loaded!');
+    
+
+    
+    
     %Check to make sure we are dealing with a mat file that was generated
-    %from the mindcontrol preview program
+    %from the mindcontrol preview program   
+    
     if ( ~exist('expTimeStamp') || ~exist('handles')|| ~exist('phaseVelocity')|| ~exist('T1') )
         disp([directory '\'  files(k,:) '  does not seem to be a valid preview_wYAML_v9 export file!']  )
         continue
@@ -56,9 +61,28 @@ for k=1:steps
     %computers clock (in matlab's serialized datenum format)
     N_realTime(k)=datenum( datevec(expTimeStamp)+[0 0 0 0 0 s_time(T2-T1)]);
     
-    %Compute short and long reversal response
-    [short(k) long(k)]=computeReversalResponse(phaseVelocity,s_time,T2-T1,T3-T1,[],0);
     
+    %On rare occasions it is important to manually correct the computers's
+    %error. One such occasion would be if there was a clear reversal, but the computer
+    %flipped the head and tail at the last moment and thus scored the event
+    %as a non-reversal. Normally this point would be tossed out. But if
+    %this happens to be the first stimulus in a trial, than it is important
+    %that this point remains, because it is used as the start time for the
+    %entire trial. In that case the experimenter goes in by hand and scores
+    %the event as a a reversal or not. Note as of this writing, this manual
+    %scoring was used in exactly one instance.
+    if (exist('specialManualDataPointFlag')&& exist('manual_short_reversal_score')&& exist('manual_long_reversal_score') )
+        %read in the manually set data point
+        short(k)=manual_short_reversal_score;
+        long(k)=manual_long_reversal_score;
+        clear specialManualDataPointFlag;
+        clear manual_short_reversal_score;
+        clear manual_long_reversal_score;
+    else
+    
+        %Compute short and long reversal response as usual
+        [short(k) long(k)]=computeReversalResponse(phaseVelocity,s_time,T2-T1,T3-T1,[],0);
+    end
 
     %Save the HUDS frame number of the start of illumination
     try
