@@ -45,6 +45,7 @@ end
 % End initialization code - DO NOT EDIT
 
 
+
 % --- Executes just before preview_wYAML_v9 is made visible.
 function preview_wYAML_v9_OpeningFcn(hObject, eventdata, handles, varargin)
 % This function has no output args, see OutputFcn.
@@ -77,12 +78,16 @@ handles.mmVidObj=[];
 % Update handles structure
 guidata(hObject, handles);
 
+
+
 %Make sure dependencies are installed...
 if isempty(which('newid','-all'))
     errordlg('You are missing a dependency. Please download newid from mathworks and follow the directions at http://www.mathworks.com/support/solutions/en/data/1-39UWQT/index.html?product=ML&solution=1-39UWQT');
     disp('http://www.mathworks.com/support/solutions/en/data/1-39UWQT/index.html?product=ML&solution=1-39UWQT');
 end
 
+%marc's basic routines 
+addpath('basic routines')
 if isempty(which('lowpass1d','-all'))
     errordlg('You are missing Marc Gershow`s "basic routines", or they have not been correctly added to the path. Please add them to the path.');
     error('You are missing Marc Gershow`s "basic routines", or they have not been correctly added to the path. Please add them to the path.');
