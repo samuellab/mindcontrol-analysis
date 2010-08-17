@@ -69,14 +69,14 @@ for k=1:steps
     figure(1);
     hold on;
     plot(t,short,'o','MarkerEdgeColor',[rand, rand, rand],'LineWidth',2);
-    title(['Respone Habituation (n=' num2str(n) ' worms)']);
+    title(['Response Habituation (n=' num2str(n) ' worms)']);
 
     
     %plot binary response
     figure(2)
     hold on;
     plot(t,r,'o','MarkerEdgeColor',[rand, rand, rand],'LineWidth',2);
-    title(['Respone Habituation (n=' num2str(n) ' worms)']);
+    title(['Response Habituation (n=' num2str(n) ' worms)']);
     
     
     clear('t','short','r');
