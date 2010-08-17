@@ -1718,8 +1718,11 @@ T1=str2num(get(handles.edit_T1, 'String'));
 T2=str2num(get(handles.edit_T2, 'String'));
 T3=str2num(get(handles.edit_T3, 'String'));
 T4=str2num(get(handles.edit_T4, 'String'));
-expTimeStamp=handles.experimentTime;
-
+if exist('handles.experimentTime')
+    expTimeStamp=handles.experimentTime;
+else
+    expTimeStamp=[]
+end
 
 %Pull out data about what protocol step we are t
 ProtocolIsOn=handles.ProtocolIsOn_data;
