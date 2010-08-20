@@ -1,4 +1,4 @@
-function sliceKymograph(directory, slice, illumRegion)
+function sliceKymograph(directory, slice, illumRegion, kymoSaturationLevel,velLim)
 
 %Load a file exported from the YAML previewer software and display the
 %kymograph and chop into a bunch of slices along the worm's body lenght and
@@ -19,6 +19,19 @@ if isempty(slice)
     slice=[10 25 50 75 95];
 end
 
+% set the default kymograph saturation levels
+if isempty(kymoSaturationLevel)
+    disp('using default kymograph saturation levels');
+    kymoSaturationLevel=[-.1 .1];
+end
+
+%set the default velocity limits
+if isempty(velLim)
+    disp('setting default velocity limit levels');
+    velLim=[-1,1]
+end
+
+
 %Specify the anterior-to-posterior illumination region.
 % At the moment this has to be entered by hand, but its easy to find
 % by manual inspection of the corresponding YAML file.
@@ -34,7 +47,7 @@ t=handles.time; %timestamp at each frame
 
 %plot the raw curvature data
 figure(1); clf; 
-imagesc(handles.curvdata,[-.1 .1]); hold on;
+imagesc(handles.curvdata,kymoSaturationLevel); hold on;
 colormap(redbluecmap(1)); 
 if exist('illumRegion','var')
     plot([illumRegion(1), illumRegion(1)], [T2-T1, T3-T1],'--w');
@@ -72,7 +85,7 @@ for k=1:length(slice)
     %plot with respect to time in seconds, such that zero is the time of
     %stimulus
     plot(t(T1:T4)-t(T2),curvSlice);
-    ylim([-.1 .1]);
+    ylim(velLim);
     
     ylabel([num2str(slice(k)) '%'])
     if (k==1); title('Curvature over time for different body segments'); end

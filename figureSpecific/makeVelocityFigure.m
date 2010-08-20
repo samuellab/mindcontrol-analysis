@@ -19,6 +19,7 @@ load(directory);
 
 %extract the timing data for the entire experiment
 t=handles.time; %timestamp at each frame
+
 %(recall that the raw data is in terms of frames, but for figures we often
 %want to present the data in terms of time)
 
