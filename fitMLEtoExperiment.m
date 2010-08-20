@@ -107,8 +107,34 @@ figure(2)
 hold on;
 plot(sort(T),x(1)+x(2)*exp(-x(3)*sort(T)),'r');
 
+%%%%%%%%%%%%
+% Another way to visualize this is to plot the ration of responses to non
+% responses in a sliding window.
+figure(3)
 
+%w=250; %bin width in seconds
+nb=10; %number of time bins
 
+%Sort the responses as a function of time
+[Tsort Ix]=sort(T);
+Rsort=R(Ix);
+
+RsortSum=cumsum(Rsort);
+m=0;
+for k=1:nb
+    %These indices correspond to the location of every 200seconds in Tsort
+    TsortIxEven(k)=findClosest(Tsort,k*Tsort(end)/nb);
+end
+NumEventsPerBin=RsortSum(TsortIxEven)-RsortSum([1 TsortIxEven(1:end-1)]);
+NumStimuliPerBin=TsortIxEven - [1 TsortIxEven(1:end-1)] ;
+Ratio=NumEventsPerBin./(NumStimuliPerBin);
+RatioTimeStamps=  ( Tsort(TsortIxEven)+Tsort([1 TsortIxEven(1:end-1)]) )./2;
+plot( RatioTimeStamps, Ratio,'o'); hold on;
+ylim([0 1]);
+ylabel('Ratio of Response to Non-Response');
+xlabel('Time (s)');
+plot(sort(T),x(1)+x(2)*exp(-x(3)*sort(T)),'r');
+title({['Ratio of responses to non responses'];[ ' bin size ' num2str(Tsort(end)/nb) ' seconds wide;(n=' num2str(n) ' worms); \tau=' num2str(1/x(3)/60) ' minutes']});
 
 close(h)
 disp('Goodbye.');
