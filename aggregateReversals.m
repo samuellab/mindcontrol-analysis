@@ -27,6 +27,7 @@ if steps==0
     return
 end
 wait = waitbar(0,'Aggregating reversals...');
+protocol=[];
 for k=1:steps
     
     waitbar(k/ steps)
@@ -91,6 +92,15 @@ for k=1:steps
         disp('Error! CamFrameNumber(T2-T1)')
     end
     
+    %Save information about what protocol step was used to deliver the
+    %stimulus
+    try
+        if ~isempty(handles.ProtocolStep_data)
+            protocol(k)=round(mean(handles.ProtocolStep_data));
+        end
+    end
+    
+    
 	clear('handles','phaseVelocity','time','T1','T2','T3','T4','expTimeStamp');
 end
 
@@ -116,7 +126,7 @@ for k=1:length(frame_HUDS)
 end
 try
 disp(['Writing to ' directory '_aggregate.mat']);
-save([directory '_aggregate.mat'],'frame_HUDS', 'frame_HUDS_str','t','N_firstRecording','short','long','N_realTime','N_recordingStartTime');
+save([directory '_aggregate.mat'],'frame_HUDS', 'protocol','frame_HUDS_str','t','N_firstRecording','short','long','N_realTime','N_recordingStartTime');
 catch err1
     disp('Error! could not write out!');
 end
