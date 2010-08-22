@@ -58,9 +58,22 @@ for k=1:steps
     %recording (in seconds)
     s_time=handles.sElapsed_data+(10^-3)*handles.msRemElapsed_data;
     
+    
+    
     %calculate the actual time of this stimulation according to the
     %computers clock (in matlab's serialized datenum format)
     N_realTime(k)=datenum( datevec(expTimeStamp)+[0 0 0 0 0 s_time(T2-T1)]);
+    
+    
+    %Santiy check...
+    %Occasionally I get spurious stimuli that claim to be from 10000
+    %seconds out. To make this traceable, I now print the timestamp
+        
+    disp(['Adding stimulus at ' datestr(N_realTime(k))])
+        
+    
+    
+ 
     
     
     %On rare occasions it is important to manually correct the computers's
@@ -70,7 +83,7 @@ for k=1:steps
     %this happens to be the first stimulus in a trial, than it is important
     %that this point remains, because it is used as the start time for the
     %entire trial. In that case the experimenter goes in by hand and scores
-    %the event as a a reversal or not. Note as of this writing, this manual
+    %the event as a a reversal or not. Note as of the submission of this manuscript, this manual
     %scoring was used in exactly one instance.
     if (exist('specialManualDataPointFlag')&& exist('manual_short_reversal_score')&& exist('manual_long_reversal_score') )
         %read in the manually set data point

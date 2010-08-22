@@ -28,6 +28,7 @@ t=handles.time; %timestamp at each frame
 figure(1); clf; 
 imagesc(handles.curvdata,[-.1 .1]); hold on;
 colormap(redbluecmap(1)); 
+colorbar;
 
 if exist('illumRegion','var')
     plot([illumRegion(1), illumRegion(1)], [T2-T1, T3-T1],'--w');

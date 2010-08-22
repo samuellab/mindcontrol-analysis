@@ -79,7 +79,7 @@ clear all; close all;
 
 
 
-
+clear all; close all;
 thresh=-.03; %worm lengths per second
 xALM=fitMLEtoExperiment('D:\Analysis\ALM_habituation',thresh)
 xAVM=fitMLEtoExperiment('D:\Analysis\AVM_habituation',thresh)
