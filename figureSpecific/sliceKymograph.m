@@ -1,5 +1,6 @@
 function sliceKymograph(directory, slice, illumRegion, kymoSaturationLevel,velLim)
-
+%sliceKymograph(directory, slice, illumRegion, kymoSaturationLevel,velLim)
+%
 %Load a file exported from the YAML previewer software and display the
 %kymograph and chop into a bunch of slices along the worm's body lenght and
 %display the curvature diagram for those body lenghts over time.
@@ -31,6 +32,10 @@ if isempty(velLim)
     velLim=[-1,1]
 end
 
+if isempty(illumRegion)
+    illumRegion=[0 100];
+end
+
 
 %Specify the anterior-to-posterior illumination region.
 % At the moment this has to be entered by hand, but its easy to find
@@ -49,7 +54,8 @@ t=handles.time; %timestamp at each frame
 figure(1); clf; 
 imagesc(handles.curvdata,kymoSaturationLevel); hold on;
 colormap(redbluecmap(1)); 
-if exist('illumRegion','var')
+if exist('illumRegion','var') && ~isempty(illumRegion)
+    illumRegion(1)
     plot([illumRegion(1), illumRegion(1)], [T2-T1, T3-T1],'--w');
     plot([illumRegion(2), illumRegion(2)], [T2-T1, T3-T1],'--w');
     plot([illumRegion(1), illumRegion(2)], [T2-T1, T2-T1],'--w');
