@@ -53,6 +53,7 @@ t=handles.time; %timestamp at each frame
 %plot the raw curvature data
 figure(1); clf; 
 imagesc(handles.curvdata,kymoSaturationLevel); hold on;
+colorbar;
 colormap(redbluecmap(1)); 
 if exist('illumRegion','var') && ~isempty(illumRegion)
     illumRegion(1)
