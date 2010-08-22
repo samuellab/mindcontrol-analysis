@@ -96,7 +96,7 @@ for k=1:steps
     %stimulus
     try
         if ~isempty(handles.ProtocolStep_data)
-            protocol(k)=round(mean(handles.ProtocolStep_data));
+            protocol(k)=round(mean(handles.ProtocolStep_data(T2-T1:T3-T1)));
         end
     end
     
