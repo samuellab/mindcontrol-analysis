@@ -79,7 +79,7 @@ f_end_anal=findClosest(timeIndex,t_endanal);
 
 % Compute the average phase velocity prior to illumination
 v0=mean(phaseVelocity(f_start_anal:f_startIllum));
-devFromv0=phaseVelocity-v0;
+devFromv0=phaseVelocity-v0; %units wormlength/sec
 
 
 %%%%%%
@@ -94,11 +94,8 @@ t_short_end= timeIndex(f_endIllum)+t_analWin.short;
 f_short_end=findClosest(timeIndex,t_short_end);
 
 
-%duration
-d_short=t_short_end-t_short_start;
-
-%response (units of bodylength/sec/sec) accelleration.. makes sense
-r_short=sum(devFromv0(f_short_start:f_short_end))./d_short; 
+%response is the difference in mean velocities
+r_short=mean(devFromv0(f_short_start:f_short_end)); 
 
 
 
