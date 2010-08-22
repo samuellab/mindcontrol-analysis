@@ -94,6 +94,9 @@ c=.001;
 x0=[a b c];  %initial conditions
 lbound=[0,0,0];
 ubound=[1,1,10];
+ 
+ 
+
 f=@(x) sum(-logLikelihood(x(1),x(2),x(3),T,R),2);
 
 %Add in constraint that a+b<1
