@@ -1,5 +1,6 @@
 function makeVelocityFigure(directory,illumRegion)
-
+%makeVelocityFigure(directory,illumRegion)
+%
 %Load a file exported from the YAML previewer software and display the
 %kymograph and the phase velocity
 %
