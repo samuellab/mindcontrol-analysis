@@ -133,7 +133,12 @@ NumEventsPerBin=RsortSum(TsortIxEven)-RsortSum([1 TsortIxEven(1:end-1)]);
 NumStimuliPerBin=TsortIxEven - [1 TsortIxEven(1:end-1)] ;
 Ratio=NumEventsPerBin./(NumStimuliPerBin);
 RatioTimeStamps=  ( Tsort(TsortIxEven)+Tsort([1 TsortIxEven(1:end-1)]) )./2;
-plot( RatioTimeStamps, Ratio,'o'); hold on;
+
+
+%Calculate errorbars based on counting statistics
+ebar= ( sqrt(NumEventsPerBin) .* (1-Ratio ) )./(NumStimuliPerBin);
+errorbar( RatioTimeStamps, Ratio,ebar,'o'); hold on;
+
 ylim([0 1]);
 ylabel('Ratio of Response to Non-Response');
 xlabel('Time (s)');
