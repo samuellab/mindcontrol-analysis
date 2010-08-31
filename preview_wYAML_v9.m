@@ -1529,7 +1529,7 @@ img = load_img(handles,current_frame);
 display_img(handles,img); % restore original img
 
 figure(2);clf;
-subplot(231);
+subplot(231); % CURVATURE IN UNITS OF 1/L
 max0 = max(max(abs(handles.curvdata * numcurvpts)));
 imagesc(handles.curvdata * numcurvpts, [-10 10]); hold on;
 colormap(redbluecmap(1)); 
@@ -1561,7 +1561,7 @@ ylabel(hNewAxes,'hframe');  %# Add a label to the right y axis
 
 
 
-subplot(234);
+subplot(234); % Curvature (binary)
 imagesc(handles.curvdata>0 ); hold on;
 plot_illum_lines(handles);
 colorbar;
@@ -1573,20 +1573,20 @@ curvfilter = fspecial('average',[timefilter,bodyfilter]);
 handles.curvdatafiltered = medfilt2(handles.curvdata,  [timefilter,bodyfilter] );
 handles.curvdatafiltered_t = diff(handles.curvdatafiltered, 1, 1);
 handles.curvdatafiltered_t_filtered = imfilter(handles.curvdatafiltered_t,  curvfilter , 'replicate');
-subplot(232);
+subplot(232); % time derivative of curvature
 imagesc(handles.curvdatafiltered_t, [-.01 .01] ); hold on;
 colormap(redbluecmap(1)); 
 plot_illum_lines(handles);
 colorbar;
-subplot(235);
+subplot(235); % time derivative of curvature (binary)
 imagesc(handles.curvdatafiltered_t>0 ); hold on;
 plot_illum_lines(handles);
 colorbar;
-subplot(233);
+subplot(233); % time derivative of curvature (filtered more)
 imagesc(handles.curvdatafiltered_t_filtered, [-.005 .005] ); hold on;
 plot_illum_lines(handles);
 colorbar;
-subplot(236);
+subplot(236); % time derivative of curvature (filtered more, binary)
 imagesc(handles.curvdatafiltered_t_filtered >0); hold on;
 plot_illum_lines(handles);
 colorbar;
