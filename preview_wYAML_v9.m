@@ -1491,20 +1491,22 @@ for absframe=frame_start:frame_end
 
     
     xy = [xx(j,:); yy(j,:)]; %use the low-pass filtered centerline data
-    df = diff(xy,1,2); 
-    t = cumsum([0, sqrt([1 1]*(df.*df))]); 
-    cv = csaps(t,xy,spline_p);
-    cv2 =  fnval(cv, t)';
-    df2 = diff(cv2,1,1); df2p = df2';
-    splen = cumsum([0, sqrt([1 1]*(df2p.*df2p))]);
-    handles.lendata(j) = splen(end);
-    % interpolate to equally spaced length units
+    df = diff(xy,1,2); % vector segments along centerline
+    t = cumsum([0, sqrt([1 1]*(df.*df))]); % cumulative path length along centerline
+    cv = csaps(t,xy,spline_p); % find cubic smoothing spline parameterized by path length
+    cv2 =  fnval(cv, t)'; % resample spline along centerline coordinates
+    df2 = diff(cv2,1,1); df2p = df2'; % calculate vector segments along sampled spline
+    splen = cumsum([0, sqrt([1 1]*(df2p.*df2p))]); % cumulative path length along resampled spline
+    handles.lendata(j) = splen(end); % total length of resampled spline
     cv2i = interp1(splen+.00001*[0:length(splen)-1],cv2, [0:(splen(end)-1)/(numcurvpts+1):(splen(end)-1)]);
+       % interpolate cv2 along numcurvpts samples equally spaced from 0 to total length of spline
+       % to give a length-parameterized curve with a fixed number of samples
+       % The addition of .00001*[...] avoids degenerate behavior due to occasional repeated samples in either x or y
     handles.cv2i_data(k,:,:) = cv2i;
-    df2 = diff(cv2i,1,1);
-    atdf2 = unwrap(atan2(-df2(:,2), df2(:,1)));
-    curv = unwrap(diff(atdf2,1));
-    
+    df2 = diff(cv2i,1,1); % calculate tangent vector along curve (not normalized)
+    atdf2 = unwrap(atan2(-df2(:,2), df2(:,1))); % angle of tangent vector.  unwrapped to avoid 2pi jumps
+    curv = unwrap(diff(atdf2,1)); % curvature kappa = derivative of angle with respect to path length
+                                  % curv = kappa * L/numcurvpts
     
     handles.curvdata(j,:) = curv';
     if get(handles.radiobutton_showimg, 'Value')
@@ -1525,8 +1527,6 @@ end
 set(handles.edit_currentframe, 'String', num2str(current_frame)); % restore original frame
 img = load_img(handles,current_frame);
 display_img(handles,img); % restore original img
-
-% handles.curvdata(176:end,:) = -handles.curvdata(176:end,end:-1:1);
 
 figure(2);clf;
 subplot(231);
