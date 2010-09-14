@@ -29,6 +29,7 @@ function [r_short r_long] = computeReversalResponse(phaseVelocity,timeIndex,f_st
 % by Andrew Leifer
 % 16 July 2010
 % leifer@fas.harvard.edu
+%
 if isempty(DEBUG)
     DEBUG=true;
 end
