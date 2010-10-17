@@ -1,16 +1,43 @@
+%  Copyright 2010 Andrew Leifer et al <leifer@fas.harvard.edu>
+%  This file is part of Mindcontrol-analysis.
+% 
+%  Mindcontrol-analysis is free software: you can redistribute it and/or modify
+%  it under the terms of the GNU General Public License as published by
+%  the Free Software Foundation, either version 3 of the License, or
+%  (at your option) any later version.
+% 
+%  Mindcontrol-analysis is distributed in the hope that it will be useful,
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+%  GNU General Public License for more details.
+% 
+%  You should have received a copy of the GNU General Public License
+%  along with mindcontrol-analysis. If not, see <http://www.gnu.org/licenses/>.
+
 
 function N=parseCVDateType(string)
 % Converts the date from a custom string format to Matlab's "serial date
 % number"
 %
 % As of version 8db88227a3519800cb8968d8a51c3eb640f57b08 of the MindControl
-% software, YAML data files are written with a date stampe in a particular format. 
+% software, YAML data files are written with a date stamp in a particular format. 
 % 
 % For example:
 %
 % ExperimentTime: "Wed Jul 28 10:35:33 2010\n"
 %
 % This function parses that format.
+%
+% For the most up to date version of this software, see:
+% http://github.com/samuellab/mindcontrol
+% 
+% NOTE: If you use any portion of this code in your research, kindly cite:
+% Leifer, A.M., Fang-Yen, C., Gershow, M., Alkema, M., and Samuel A. D.T.,
+%   "Optogenetic manipulation of neural activity with high spatial resolution
+%   in freely moving Caenorhabditis elegans," Nature Methods, Submitted
+%   (2010).
+% 
+
 
 [match split]=regexp(string,'[0-9]*','match','split');
 d=str2num(match{1});

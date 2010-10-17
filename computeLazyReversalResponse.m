@@ -1,6 +1,23 @@
+%  Copyright 2010 Andrew Leifer et al <leifer@fas.harvard.edu>
+%  This file is part of Mindcontrol-analysis.
+% 
+%  Mindcontrol-analysis is free software: you can redistribute it and/or modify
+%  it under the terms of the GNU General Public License as published by
+%  the Free Software Foundation, either version 3 of the License, or
+%  (at your option) any later version.
+% 
+%  Mindcontrol-analysis is distributed in the hope that it will be useful,
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+%  GNU General Public License for more details.
+% 
+%  You should have received a copy of the GNU General Public License
+%  along with mindcontrol-analysis. If not, see <http://www.gnu.org/licenses/>.
+
+
 function [extremas_short, extremas_long] = computeLazyReversalResponse(phaseVelocity,timeIndex,f_startIllum,f_endIllum,t_analWin,DEBUG)
 % This function computes the Reversal response of a worm after it was
-% illuminated using a naive lazy method. It takes the minimum
+% illuminated using a naive lazy method. 
 %
 % This function just returns the max and min in different time intervals of
 % the difference between phasevelocity and baseline phasevelocity.
@@ -23,6 +40,18 @@ function [extremas_short, extremas_long] = computeLazyReversalResponse(phaseVelo
 % by Andrew Leifer
 % 16 July 2010
 % leifer@fas.harvard.edu
+%
+%
+%  For the most up to date version of this software, see:
+%  https://github.com/samuellab/mindcontrol
+% 
+% NOTE: If you use any portion of this code in your research, kindly cite:
+% Leifer, A.M., Fang-Yen, C., Gershow, M., Alkema, M., and Samuel A. D.T.,
+%   "Optogenetic manipulation of neural activity with high spatial resolution
+%   in freely moving Caenorhabditis elegans," Nature Methods, Submitted
+%   (2010).
+% 
+
 if isempty(DEBUG)
     DEBUG=true;
 end
