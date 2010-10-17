@@ -1,9 +1,34 @@
+%  Copyright 2010 Andrew Leifer et al <leifer@fas.harvard.edu>
+%  This file is part of Mindcontrol-analysis.
+% 
+%  Mindcontrol-analysis is free software: you can redistribute it and/or modify
+%  it under the terms of the GNU General Public License as published by
+%  the Free Software Foundation, either version 3 of the License, or
+%  (at your option) any later version.
+% 
+%  Mindcontrol-analysis is distributed in the hope that it will be useful,
+%  but WITHOUT ANY WARRANTY; without even the implied warranty of
+%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+%  GNU General Public License for more details.
+% 
+%  You should have received a copy of the GNU General Public License
+%  along with mindcontrol-analysis. If not, see <http://www.gnu.org/licenses/>.
 
 function nu=velocityanalysis(handles)
-
 % The mindcontrol previewer program reads in centerline data from a YAML file
 % and passes that to this function which calculates a phase velocity and
 % also optionally fits a that phase velocity to a hyperbolic tangent.
+%
+%
+% For the most up to date version of this software, see:
+% http://github.com/samuellab/mindcontrol
+% 
+% NOTE: If you use any portion of this code in your research, kindly cite:
+% Leifer, A.M., Fang-Yen, C., Gershow, M., Alkema, M., and Samuel A. D.T.,
+%   "Optogenetic manipulation of neural activity with high spatial resolution
+%   in freely moving Caenorhabditis elegans," Nature Methods, Submitted
+%   (2010).
+% 
 
 FIT2TANH=0;
 
