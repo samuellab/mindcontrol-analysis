@@ -1,5 +1,5 @@
 %Load in the first data set
-load('D:\Analysis\unc17DorsalVentral\20100301_1506_unc17Halo_HUDS_37773-38110.mat')
+load('D:\Analysis\OptogeneticsPaper\unc17DorsalVentral\20100301_1506_unc17Halo_HUDS_37773-38110.mat')
 
 %Copy the phase velocity.
 pv1=phaseVelocity;
@@ -10,7 +10,7 @@ dlpOn1=handles.time(T2);
 dlpOff1=handles.time(T3);
 
 %Load the second data set
-load('D:\Analysis\unc17DorsalVentral\20100301_1506_unc17Halo_HUDS_38098-38431.mat')
+load('D:\Analysis\OptogeneticsPaper\unc17DorsalVentral\20100301_1506_unc17Halo_HUDS_38098-38431.mat')
 
 %Copy the phase velocity.
 pv2=phaseVelocity;

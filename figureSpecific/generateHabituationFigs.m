@@ -1,3 +1,6 @@
+ReCrunchNumbers=0
+
+if ReCrunchNumbers
 
 %%%%%%%% AVM
 
@@ -77,7 +80,7 @@ clear all; close all;
 clear all; close all;
 
 
-
+end
 
 clear all; close all;
 thresh=-.03; %worm lengths per second

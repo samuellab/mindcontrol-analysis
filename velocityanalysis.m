@@ -1,5 +1,13 @@
 
 function nu=velocityanalysis(handles)
+
+% The mindcontrol previewer program reads in centerline data from a YAML file
+% and passes that to this function which calculates a phase velocity and
+% also optionally fits a that phase velocity to a hyperbolic tangent.
+
+FIT2TANH=0;
+
+
 curvdata=handles.curvdata;
  T1 = str2num(get(handles.edit_T1, 'String'));
 T2 = str2num(get(handles.edit_T2, 'String'));
@@ -25,22 +33,29 @@ psFilt=ps; %don't do any filtering on the velocity. we can do that later.
 
 % convert from percent bodylength per frame to body length per second
 nu= -psFilt ./ (100*spf);
-
-
 %We would like to get that into fractional body length per second
 %So we must multpily by (1/(100))*(1/ ( seconds /frame) );
 
-[tanhCoef,tanhGOF, c1, c2]= findcorners(nu);
- x=1:length(nu);
+
+
+%find corners using fit to tanh
+if(FIT2TANH)
+  [tanhCoef,tanhGOF, c1, c2]= findcorners(nu);
+end
+
+x=1:length(nu);
+ 
  
  
  %Plot Output:
  figure(3); clf; hold on;
+if FIT2TANH
  A=tanhCoef.A;
  beta=tanhCoef.beta;
  x0=tanhCoef.x0;
  B=tanhCoef.B;
  y=A*tanh(beta.*(x-x0))+B;
+end
 
  hold on;
  subplot(1,2,1)
@@ -64,9 +79,16 @@ end
  
  subplot(1,2,2)
  hold on;
+ 
+ %Plot phase velocity
  plot(nu,x)
- plot(y,x,'m','linewidth',2)
- plot([A+B B-A],[x0+1/beta x0-1/beta],'ro','linewidth',3);
+
+ if FIT2TANH
+     %Plot the hyperbolic tangent fit
+     plot(y,x,'m','linewidth',2)
+     plot([A+B B-A],[x0+1/beta x0-1/beta],'ro','linewidth',3);
+ end
+ 
 set(gca,'YDir','reverse');
 set(gca,'Ylim',ylims);
 title('Phase velocity')

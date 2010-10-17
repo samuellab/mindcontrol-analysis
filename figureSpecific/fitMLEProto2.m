@@ -145,5 +145,21 @@ xlabel('Time (s)');
 plot(sort(T),x(1)+x(2)*exp(-x(3)*sort(T)),'r');
 title({['Ratio of responses to non responses'];[ ' bin size ' num2str(Tsort(end)/nb) ' seconds wide;(n=' num2str(n) ' worms); \tau=' num2str(1/x(3)/60) ' minutes']});
 
+
+figure(4); hold on;
+%Calculate errorbars based on counting statistics
+ebar= ( sqrt(NumEventsPerBin) .* (1-Ratio ) )./(NumStimuliPerBin);
+hold on;
+h2=errorbar( RatioTimeStamps, Ratio-x(1),ebar,'o');
+set(get(h2,'Parent'), 'YScale', 'log')
+semilogy(sort(T),x(2)*exp(-x(3)*sort(T)),'r');
+
+ylim([0 1]);
+ylabel('Ratio of Response to Non-Response');
+xlabel('Time (s)');
+
+
+
+
 close(h)
 disp('Goodbye.');
