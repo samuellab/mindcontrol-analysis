@@ -1,8 +1,26 @@
 This is the collection of MATLAB analysis scripts to analyze data produced 
 by Andrew Leifer's MindControl software. 
 
+
+The largest component of scripts is a vewer that will read in a YAML data file and annotated video created by the MindControl software suite. It will allow the researcher to rapidly scan different stimulus events and generate quantative analysis such as kymographs of the worm's resulting behavior.
+
+The main functionality can be invoked by opening preview_wYAML_v9.fig in GUIDE and clicking run.
+
+The software requires MATLAB 7.8.0 (R2009a) or higher with the image processing toolbox and the spline fitting toolbox.
+
+It also requires downloading newid dialog box from the mathworks and following the isntallatoins instructions written there:
+http://www.mathworks.com/support/solutions/en/data/1-39UWQT/index.html?product=ML&solution=1-39UWQT
+
+Finally, to read annotations inline requires Python.
+
+
 Chris Fang-Yen wrote the initial data previewing suite.
 Andrew Leifer added features including the reversal analysis. 
 Marc Gershow wrote the phase-velocity extractor.
 Ben Schwartz helped design the Maximum Likelihood Estimator 
 
+The most up to date version of this software resides at:
+http://github.com/samuellab/mindcontrol-analysis
+
+The corresponding mindcontrol system resides at:
+http://github.com/samuellab/mindcontrol
