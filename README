@@ -6,12 +6,12 @@ The largest component of scripts is a vewer that will read in a YAML data file a
 
 The main functionality can be invoked by opening preview_wYAML_v9.fig in GUIDE and clicking run.
 
-The software requires MATLAB 7.8.0 (R2009a) or higher with the image processing toolbox and the spline fitting toolbox.
+The software requires MATLAB 7.8.0 (R2009a) or higher with the image processing toolbox and the curve fitting toolbox.
 
 It also requires downloading newid dialog box from the mathworks and following the isntallatoins instructions written there:
 http://www.mathworks.com/support/solutions/en/data/1-39UWQT/index.html?product=ML&solution=1-39UWQT
 
-Finally, to read annotations inline requires Python.
+Finally, to read annotations inline requires Python >2.5.
 
 
 Chris Fang-Yen wrote the initial data previewing suite.
@@ -24,3 +24,11 @@ http://github.com/samuellab/mindcontrol-analysis
 
 The corresponding mindcontrol system resides at:
 http://github.com/samuellab/mindcontrol
+
+This is free software released under the GNU GPL license. See COPYING for more details. 
+
+If you use any portion of this code in your research, kindly cite:
+ Leifer, A.M., Fang-Yen, C., Gershow, M., Alkema, M., and Samuel A. D.T.,
+ "Optogenetic manipulation of neural activity with high spatial resolution
+ in freely moving Caenorhabditis elegans," Nature Methods, Submitted
+ (2010).
