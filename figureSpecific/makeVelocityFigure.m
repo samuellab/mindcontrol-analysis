@@ -30,12 +30,22 @@ imagesc(handles.curvdata,[-.1 .1]); hold on;
 colormap(redbluecmap(1)); 
 colorbar;
 
-if exist('illumRegion','var')
+if ~exist('illumRegion','var')
+    illumRegion(1)=0;
+    illumRegion(2)=100;
+end
+
+if length(illumRegion)<1
+    illumRegion(1)=0;
+    illumRegion(2)=100;
+end
+    
+    
     plot([illumRegion(1), illumRegion(1)], [T2-T1, T3-T1],'--w');
     plot([illumRegion(2), illumRegion(2)], [T2-T1, T3-T1],'--w');
     plot([illumRegion(1), illumRegion(2)], [T2-T1, T2-T1],'--w');
     plot([illumRegion(1), illumRegion(2)], [T3-T1, T3-T1],'--w');
-end
+
 
 axesPosition = get(gca,'Position');          %# Get the current axes position
 axis off; %turn off current axis
